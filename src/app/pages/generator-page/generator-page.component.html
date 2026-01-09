@@ -18,19 +18,35 @@
         matInput
         rows="4"
         [(ngModel)]="promptUsuario"
-        placeholder="Ex: Atividade sobre cores para Jardim 1"
+        placeholder="Ex: Atividade sobre cores para Jardim 1 com objetivos e materiais"
       ></textarea>
     </mat-form-field>
   </div>
 
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="gerar()"
-    [disabled]="carregando || !promptUsuario || !serieSelecionada"
-  >
-    {{ carregando ? 'Gerando...' : 'Gerar Exercício' }}
-  </button>
+  <div class="actions">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="gerar()"
+      [disabled]="carregando || !promptUsuario || !serieSelecionada"
+    >
+      Gerar Exercício
+    </button>
+    <button
+      *ngIf="respostaIA"
+      mat-stroked-button
+      color="primary"
+      (click)="gerar()"
+      [disabled]="carregando || !promptUsuario || !serieSelecionada"
+    >
+      Gerar novamente
+    </button>
+  </div>
+
+  <div *ngIf="carregando" class="loading-state">
+    <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
+    <span>Gerando sugestões...</span>
+  </div>
 
   <mat-card *ngIf="respostaIA" class="resposta-card">
     <mat-card-title>Exercício Sugerido:</mat-card-title>
