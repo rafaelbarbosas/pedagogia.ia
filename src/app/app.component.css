@@ -1,58 +1,103 @@
-.container {
-  max-width: 700px;
-  margin: auto;
-  padding: 2rem;
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.prompt-box {
-  width: 100%;
-  margin-bottom: 1rem;
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
 }
 
-.resposta-card {
-  padding: 1rem;
-  background-color: #f7f7f7;
-  border-radius: 0.5rem;
-  margin-top: 1em;
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
-.markdown-content {
-  font-family: 'Segoe UI', sans-serif;
-  line-height: 1.6;
+.brand__name {
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-.markdown-content h1,
-.markdown-content h2,
-.markdown-content h3 {
-  margin-top: 1rem;
+.brand__tagline {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nav-links a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.page-content {
+  flex: 1;
+  padding: 2.5rem 1.5rem 3rem;
+  background: #f6f7fb;
+}
+
+.site-footer {
+  background: #111827;
+  color: #f9fafb;
+  padding: 2rem 1.5rem 1.5rem;
+}
+
+.footer-content {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-brand {
+  font-size: 1.1rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
-  font-weight: bold;
 }
 
-.markdown-content p {
-  margin: 0.5rem 0;
+.footer-links {
+  display: grid;
+  gap: 0.6rem;
 }
 
-.markdown-content ul {
-  padding-left: 1.5rem;
-  margin: 0.5rem 0;
+.footer-links a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.markdown-content li {
-  margin-bottom: 0.3rem;
+.footer-links a:hover,
+.footer-links a:focus {
+  text-decoration: underline;
 }
 
-.markdown-content strong {
-  font-weight: bold;
+.footer-copy {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.8;
 }
 
-.markdown-content em {
-  font-style: italic;
-}
+@media (max-width: 900px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
 
-.markdown-content code {
-  font-family: monospace;
-  background-color: #eee;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }
