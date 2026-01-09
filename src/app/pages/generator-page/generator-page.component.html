@@ -41,7 +41,21 @@
     >
       Gerar novamente
     </button>
+    <button
+      *ngIf="respostaIA"
+      mat-stroked-button
+      color="primary"
+      [matMenuTriggerFor]="menuExportacao"
+      [disabled]="carregando"
+    >
+      Exportar atividade
+    </button>
   </div>
+
+  <mat-menu #menuExportacao="matMenu">
+    <button mat-menu-item (click)="exportarTxt()">Baixar .txt</button>
+    <button mat-menu-item (click)="exportarPdf()">Baixar .pdf</button>
+  </mat-menu>
 
   <div *ngIf="carregando" class="loading-state">
     <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
