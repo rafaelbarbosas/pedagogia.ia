@@ -34,6 +34,11 @@
   margin-top: 1.5rem;
 }
 
+.cta-button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
 .hero-card {
   background: #ffffff;
   padding: 1.8rem;
