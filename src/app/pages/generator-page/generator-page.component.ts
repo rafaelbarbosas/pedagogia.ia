@@ -37,6 +37,11 @@ export class GeneratorPageComponent {
   carregando = false;
   serieSelecionada = '';
   seriesDisponiveis = ['Jardim 1', 'Jardim 2', '1º ano'];
+  feedbackEscolha: 'util' | 'nao_util' | null = null;
+  feedbackComentario = '';
+  feedbackEnviando = false;
+  feedbackEnviado = false;
+  feedbackErro = '';
 
   constructor(
     private iaService: IaService,
@@ -50,6 +55,7 @@ export class GeneratorPageComponent {
 
     this.carregando = true;
     this.respostaIA = '';
+    this.resetarFeedback();
     const promptComSerie = `Série alvo: ${this.serieSelecionada}\n\n${this.promptUsuario}`;
 
     try {
@@ -84,6 +90,43 @@ export class GeneratorPageComponent {
 
     const pdfBlob = this.gerarPdf(conteudo);
     this.baixarArquivo(pdfBlob, this.gerarNomeArquivo('pdf'));
+  }
+
+  selecionarFeedback(tipo: 'util' | 'nao_util') {
+    this.feedbackEscolha = tipo;
+    this.feedbackErro = '';
+  }
+
+  async enviarFeedback() {
+    if (!this.feedbackEscolha || !this.respostaIA) {
+      return;
+    }
+
+    this.feedbackEnviando = true;
+    this.feedbackErro = '';
+
+    try {
+      await this.iaService.enviarFeedback({
+        prompt: this.promptUsuario,
+        serie: this.serieSelecionada,
+        resposta: this.respostaIA,
+        utilidade: this.feedbackEscolha,
+        comentario: this.feedbackComentario.trim() || undefined
+      });
+      this.feedbackEnviado = true;
+    } catch (err) {
+      this.feedbackErro = 'Não foi possível enviar o feedback. Tente novamente.';
+    } finally {
+      this.feedbackEnviando = false;
+    }
+  }
+
+  private resetarFeedback() {
+    this.feedbackEscolha = null;
+    this.feedbackComentario = '';
+    this.feedbackEnviando = false;
+    this.feedbackEnviado = false;
+    this.feedbackErro = '';
   }
 
   private montarConteudoExportacao(): string {

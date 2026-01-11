@@ -68,4 +68,54 @@
       <div [innerHTML]="textoFormatado" class="markdown-content"></div>
     </mat-card-content>
   </mat-card>
+
+  <mat-card *ngIf="respostaIA" class="feedback-card">
+    <mat-card-title>Esse exercício foi útil para você?</mat-card-title>
+    <mat-card-content>
+      <div class="feedback-options">
+        <button
+          mat-stroked-button
+          color="primary"
+          type="button"
+          [class.feedback-selected]="feedbackEscolha === 'util'"
+          (click)="selecionarFeedback('util')"
+        >
+          Útil
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          type="button"
+          [class.feedback-selected]="feedbackEscolha === 'nao_util'"
+          (click)="selecionarFeedback('nao_util')"
+        >
+          Não foi útil
+        </button>
+      </div>
+
+      <mat-form-field appearance="outline" class="feedback-comment">
+        <mat-label>Comentário (opcional)</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          [(ngModel)]="feedbackComentario"
+          placeholder="Conte o que funcionou ou o que pode melhorar."
+        ></textarea>
+      </mat-form-field>
+
+      <div class="feedback-actions">
+        <button
+          mat-raised-button
+          color="accent"
+          type="button"
+          (click)="enviarFeedback()"
+          [disabled]="feedbackEnviando || feedbackEnviado || !feedbackEscolha"
+        >
+          {{ feedbackEnviando ? 'Enviando...' : 'Enviar feedback' }}
+        </button>
+        <span *ngIf="feedbackEnviado" class="feedback-status success">Obrigado pelo feedback!</span>
+        <span *ngIf="feedbackErro" class="feedback-status error">{{ feedbackErro }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </section>

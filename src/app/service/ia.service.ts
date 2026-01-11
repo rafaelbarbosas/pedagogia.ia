@@ -19,4 +19,14 @@ export class IaService {
     return response.resposta;
   }
 
+  async enviarFeedback(payload: {
+    prompt: string;
+    serie: string;
+    resposta: string;
+    utilidade: 'util' | 'nao_util';
+    comentario?: string;
+  }): Promise<void> {
+    await firstValueFrom(this.http.post(`https://${this.URL_API}/feedback`, payload));
+  }
+
 }
