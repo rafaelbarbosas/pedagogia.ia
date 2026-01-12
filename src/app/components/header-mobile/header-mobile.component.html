@@ -6,21 +6,24 @@
       <span class="header-mobile__tagline">Atividades pedagógicas inteligentes</span>
     </span>
   </a>
-  <button
-    mat-icon-button
-    class="header-mobile__toggle"
-    type="button"
-    (click)="toggleMenu()"
-    [attr.aria-expanded]="isMenuOpen"
-    aria-controls="mobile-menu"
-    aria-label="Abrir menu"
-  >
-    <span class="header-mobile__icon">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-  </button>
+  <div class="header-mobile__actions">
+    <app-user-profile-menu></app-user-profile-menu>
+    <button
+      mat-icon-button
+      class="header-mobile__toggle"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen"
+      aria-controls="mobile-menu"
+      aria-label="Abrir menu"
+    >
+      <span class="header-mobile__icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
 </header>
 
 <nav *ngIf="isMenuOpen" id="mobile-menu" class="header-mobile__menu" aria-label="Navegação móvel">
@@ -29,7 +32,13 @@
   <a routerLink="/sobre-nos" routerLinkActive="active" (click)="closeMenu()">Sobre nós</a>
   <a routerLink="/contato" routerLinkActive="active" (click)="closeMenu()">Contato</a>
   <a routerLink="/gerar-atividades" routerLinkActive="active" (click)="closeMenu()">Gerar atividades</a>
-  <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()" class="header-mobile__login">
+  <a
+    *ngIf="!(authSession.isAuthenticated$ | async)"
+    routerLink="/login"
+    routerLinkActive="active"
+    (click)="closeMenu()"
+    class="header-mobile__login"
+  >
     <mat-icon aria-hidden="true">login</mat-icon>
     Login
   </a>

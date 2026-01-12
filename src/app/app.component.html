@@ -12,10 +12,17 @@
     <a mat-button routerLink="/sobre-nos" routerLinkActive="active">Sobre nós</a>
     <a mat-button routerLink="/contato" routerLinkActive="active">Contato</a>
     <a mat-button routerLink="/gerar-atividades" routerLinkActive="active" class="nav-cta">Gerar atividades</a>
-    <a mat-stroked-button routerLink="/login" routerLinkActive="active" class="nav-login">
+    <a
+      *ngIf="!(authSession.isAuthenticated$ | async)"
+      mat-stroked-button
+      routerLink="/login"
+      routerLinkActive="active"
+      class="nav-login"
+    >
       <mat-icon aria-hidden="true">login</mat-icon>
       Login
     </a>
+    <app-user-profile-menu></app-user-profile-menu>
   </nav>
 </mat-toolbar>
 <app-header-mobile *ngIf="!isHeaderHidden"></app-header-mobile>

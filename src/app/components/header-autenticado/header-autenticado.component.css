@@ -55,6 +55,11 @@ app-header-autenticado-mobile {
   opacity: 0.85;
 }
 
+.header-auth__actions {
+  display: inline-flex;
+  align-items: center;
+}
+
 @media (max-width: 900px) {
   .site-header {
     flex-direction: column;

@@ -63,6 +63,11 @@ app-header-mobile {
   gap: 0.5rem;
 }
 
+.nav-links app-user-profile-menu {
+  margin-left: 0.25rem;
+  align-self: center;
+}
+
 .nav-links a.active {
   background-color: rgba(255, 255, 255, 0.2);
 }
