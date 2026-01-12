@@ -1,0 +1,8 @@
+.auth-button {
+  text-transform: none;
+  font-weight: 600;
+}
+
+.auth-button--signup {
+  min-width: 140px;
+}

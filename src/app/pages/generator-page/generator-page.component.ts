@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 
+import { AuthLoginButtonComponent } from '../../components/auth-login-button/auth-login-button.component';
+import { AuthSignupButtonComponent } from '../../components/auth-signup-button/auth-signup-button.component';
 import { IaService } from '../../service/ia.service';
 
 @Component({
@@ -27,7 +30,9 @@ import { IaService } from '../../service/ia.service';
     MatIconModule,
     MatMenuModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    AuthLoginButtonComponent,
+    AuthSignupButtonComponent
   ],
   templateUrl: './generator-page.component.html',
   styleUrls: ['./generator-page.component.css']
@@ -46,6 +51,7 @@ export class GeneratorPageComponent {
   feedbackErro = '';
   feedbackPopoverAberto = false;
   geracaoSucesso = false;
+  modalLimiteAberto = false;
   painelAtivo: 'input' | 'output' = 'input';
   private swipeStartX = 0;
   private swipeStartY = 0;
@@ -60,6 +66,8 @@ export class GeneratorPageComponent {
       return;
     }
 
+    const respostaAnterior = this.respostaIA;
+    const geracaoAnterior = this.geracaoSucesso;
     this.carregando = true;
     this.respostaIA = '';
     this.geracaoSucesso = false;
@@ -72,7 +80,14 @@ export class GeneratorPageComponent {
       this.geracaoSucesso = true;
       this.feedbackPopoverAberto = true;
     } catch (err) {
-      this.respostaIA = 'Erro ao gerar exercício. Tente novamente.';
+      if (this.isLimiteUsoErro(err)) {
+        this.respostaIA = respostaAnterior;
+        this.geracaoSucesso = geracaoAnterior;
+        this.feedbackPopoverAberto = false;
+        this.abrirModalLimite();
+      } else {
+        this.respostaIA = 'Erro ao gerar exercício. Tente novamente.';
+      }
     } finally {
       this.carregando = false;
     }
@@ -142,6 +157,14 @@ export class GeneratorPageComponent {
 
   fecharFeedbackPopover() {
     this.feedbackPopoverAberto = false;
+  }
+
+  abrirModalLimite() {
+    this.modalLimiteAberto = true;
+  }
+
+  fecharModalLimite() {
+    this.modalLimiteAberto = false;
   }
 
   iniciarSwipe(evento: TouchEvent) {
@@ -295,5 +318,22 @@ export class GeneratorPageComponent {
     });
 
     return linhas;
+  }
+
+  private isLimiteUsoErro(err: unknown): boolean {
+    if (!(err instanceof HttpErrorResponse)) {
+      return false;
+    }
+
+    if (err.status !== 429) {
+      return false;
+    }
+
+    const detalhe =
+      typeof err.error === 'string'
+        ? err.error
+        : (err.error as { detail?: string })?.detail;
+
+    return typeof detalhe === 'string' && detalhe.toLowerCase().includes('limite de uso atingido');
   }
 }
