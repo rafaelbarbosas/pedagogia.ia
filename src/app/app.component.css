@@ -57,6 +57,10 @@
   color: #ffffff;
 }
 
+.nav-links .nav-cta.active {
+  display: none;
+}
+
 .nav-links .nav-cta:hover,
 .nav-links .nav-cta:focus {
   background-color: #111827;
