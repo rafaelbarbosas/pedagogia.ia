@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,6 +24,7 @@ import { IaService } from '../../service/ia.service';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatIconModule,
     MatMenuModule,
     MatCardModule,
     MatProgressSpinnerModule
@@ -42,6 +44,8 @@ export class GeneratorPageComponent {
   feedbackEnviando = false;
   feedbackEnviado = false;
   feedbackErro = '';
+  feedbackPopoverAberto = false;
+  geracaoSucesso = false;
 
   constructor(
     private iaService: IaService,
@@ -55,11 +59,14 @@ export class GeneratorPageComponent {
 
     this.carregando = true;
     this.respostaIA = '';
+    this.geracaoSucesso = false;
     this.resetarFeedback();
     const promptComSerie = `Série alvo: ${this.serieSelecionada}\n\n${this.promptUsuario}`;
 
     try {
       this.respostaIA = await this.iaService.gerarExercicio(promptComSerie);
+      this.geracaoSucesso = true;
+      this.feedbackPopoverAberto = true;
     } catch (err) {
       this.respostaIA = 'Erro ao gerar exercício. Tente novamente.';
     } finally {
@@ -127,6 +134,10 @@ export class GeneratorPageComponent {
     this.feedbackEnviando = false;
     this.feedbackEnviado = false;
     this.feedbackErro = '';
+  }
+
+  fecharFeedbackPopover() {
+    this.feedbackPopoverAberto = false;
   }
 
   private montarConteudoExportacao(): string {

@@ -30,16 +30,7 @@
       (click)="gerar()"
       [disabled]="carregando || !promptUsuario || !serieSelecionada"
     >
-      Gerar Exercício
-    </button>
-    <button
-      *ngIf="respostaIA"
-      mat-stroked-button
-      color="primary"
-      (click)="gerar()"
-      [disabled]="carregando || !promptUsuario || !serieSelecionada"
-    >
-      Gerar novamente
+      {{ geracaoSucesso ? 'Gerar novamente' : 'Gerar Exercício' }}
     </button>
     <button
       *ngIf="respostaIA"
@@ -69,14 +60,26 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card *ngIf="respostaIA" class="feedback-card">
-    <mat-card-title>Esse exercício foi útil para você?</mat-card-title>
+  <mat-card *ngIf="feedbackPopoverAberto && geracaoSucesso" class="feedback-popover">
+    <div class="feedback-header">
+      <mat-card-title>Esse exercício foi útil para você?</mat-card-title>
+      <button
+        mat-icon-button
+        type="button"
+        class="close-popover"
+        (click)="fecharFeedbackPopover()"
+        aria-label="Fechar feedback"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <mat-card-content>
       <div class="feedback-options">
         <button
           mat-stroked-button
           color="primary"
           type="button"
+          class="feedback-option-button"
           [class.feedback-selected]="feedbackEscolha === 'util'"
           (click)="selecionarFeedback('util')"
         >
@@ -86,6 +89,7 @@
           mat-stroked-button
           color="primary"
           type="button"
+          class="feedback-option-button"
           [class.feedback-selected]="feedbackEscolha === 'nao_util'"
           (click)="selecionarFeedback('nao_util')"
         >
