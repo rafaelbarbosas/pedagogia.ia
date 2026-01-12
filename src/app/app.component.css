@@ -81,6 +81,12 @@ app-header-mobile {
   background-color: #111827;
 }
 
+.nav-links .nav-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .page-content {
   flex: 1;
   padding: 2.5rem 1.5rem 3rem;

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="site-header">
+<mat-toolbar *ngIf="!isLoginPage" color="primary" class="site-header">
   <a class="brand" routerLink="/home" aria-label="Ir para a página inicial">
     <img class="brand__logo" src="logo.svg" alt="Ícone do Pedagogia.IA">
     <div class="brand__text">
@@ -12,9 +12,13 @@
     <a mat-button routerLink="/sobre-nos" routerLinkActive="active">Sobre nós</a>
     <a mat-button routerLink="/contato" routerLinkActive="active">Contato</a>
     <a mat-button routerLink="/gerar-atividades" routerLinkActive="active" class="nav-cta">Gerar atividades</a>
+    <a mat-stroked-button routerLink="/login" routerLinkActive="active" class="nav-login">
+      <mat-icon aria-hidden="true">login</mat-icon>
+      Login
+    </a>
   </nav>
 </mat-toolbar>
-<app-header-mobile></app-header-mobile>
+<app-header-mobile *ngIf="!isLoginPage"></app-header-mobile>
 
 <main class="page-content">
   <router-outlet></router-outlet>
