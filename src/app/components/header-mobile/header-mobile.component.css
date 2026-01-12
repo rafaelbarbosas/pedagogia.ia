@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.header-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--mat-toolbar-container-background-color, #3f51b5);
+  color: #ffffff;
+}
+
+.header-mobile__logo {
+  width: 40px;
+  height: 40px;
+}
+
+.header-mobile__toggle {
+  color: inherit;
+}
+
+.header-mobile__icon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-mobile__icon span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+.header-mobile__menu {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 1rem;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.header-mobile__menu a {
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header-mobile__menu a.active,
+.header-mobile__menu a:hover,
+.header-mobile__menu a:focus {
+  color: #1d4ed8;
+}
