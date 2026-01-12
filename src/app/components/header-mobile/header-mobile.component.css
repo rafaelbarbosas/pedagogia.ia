@@ -87,3 +87,9 @@
 .header-mobile__menu a:focus {
   color: #1d4ed8;
 }
+
+.header-mobile__login {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}

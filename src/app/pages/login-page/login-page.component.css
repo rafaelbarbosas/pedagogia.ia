@@ -1,0 +1,95 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.login-card {
+  width: min(480px, 100%);
+  padding: 2rem 2.2rem;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.login-header h1 {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 2rem;
+}
+
+.login-header p {
+  color: #4b5563;
+  margin: 0;
+}
+
+.login-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+
+.login-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.login-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.5rem;
+}
+
+.login-message {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.login-message.success {
+  color: #15803d;
+}
+
+.login-message.error {
+  color: #b91c1c;
+}
+
+.login-links {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+}
+
+.signup-link {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link:hover,
+.signup-link:focus {
+  text-decoration: underline;
+}
+
+.login-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: 1.6rem 1.4rem;
+  }
+
+  .login-header h1 {
+    font-size: 1.7rem;
+  }
+}

@@ -1,0 +1,58 @@
+<section class="login-page">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <p class="login-badge">Acesse sua conta</p>
+      <h1>Bem-vindo de volta</h1>
+      <p>Entre para continuar gerando atividades personalizadas com o Pedagogia.IA.</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="submitLogin()" #loginForm="ngForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          email
+          placeholder="voce@escola.com"
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          type="password"
+          name="senha"
+          [(ngModel)]="senha"
+          required
+          placeholder="Digite sua senha"
+        >
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="login-submit"
+        [disabled]="carregando || !loginForm.form.valid"
+      >
+        <mat-icon>login</mat-icon>
+        {{ carregando ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+      <p *ngIf="loginSucesso" class="login-message success">Login realizado com sucesso!</p>
+      <p *ngIf="loginErro" class="login-message error">{{ loginErro }}</p>
+    </form>
+
+    <div class="login-links">
+      <a routerLink="/cadastro" class="signup-link">Não é cadastrado? Fazer cadastro</a>
+      <a mat-stroked-button color="primary" routerLink="/home" class="login-home">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para a home
+      </a>
+    </div>
+  </mat-card>
+</section>
