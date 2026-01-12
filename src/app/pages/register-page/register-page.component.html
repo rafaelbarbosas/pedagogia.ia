@@ -83,13 +83,14 @@
         >
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="register-file-field">
         <mat-label>Foto de perfil (opcional)</mat-label>
         <input
           matInput
           type="file"
           accept="image/*"
           name="fotoPerfil"
+          class="register-file-input"
           (change)="onFotoPerfilSelecionada($event)"
         >
         <mat-hint *ngIf="fotoPerfilNome">Arquivo selecionado: {{ fotoPerfilNome }}</mat-hint>
