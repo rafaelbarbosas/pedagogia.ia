@@ -1,0 +1,56 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.profile-menu__trigger {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  padding: 0;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.profile-menu__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-menu__avatar--large {
+  width: 48px;
+  height: 48px;
+}
+
+.profile-menu__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 0.5rem;
+}
+
+.profile-menu__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.profile-menu__name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.profile-menu__email {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+:host ::ng-deep .profile-menu__panel .mat-mdc-menu-content {
+  padding: 0;
+}

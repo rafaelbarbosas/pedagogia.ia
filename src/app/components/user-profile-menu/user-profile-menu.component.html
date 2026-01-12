@@ -1,0 +1,44 @@
+<ng-container *ngIf="viewModel$ | async as vm">
+  <ng-container *ngIf="vm.isAuthenticated">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="profileMenu"
+      class="profile-menu__trigger"
+      type="button"
+      aria-label="Abrir menu do perfil"
+    >
+      <ng-container *ngIf="vm.avatarUrl; else defaultAvatar">
+        <img class="profile-menu__avatar" [src]="vm.avatarUrl" alt="Foto de perfil">
+      </ng-container>
+      <ng-template #defaultAvatar>
+        <mat-icon aria-hidden="true">account_circle</mat-icon>
+      </ng-template>
+    </button>
+
+    <mat-menu #profileMenu="matMenu" class="profile-menu__panel" xPosition="before">
+      <div class="profile-menu__header">
+        <ng-container *ngIf="vm.avatarUrl; else avatarFallback">
+          <img class="profile-menu__avatar profile-menu__avatar--large" [src]="vm.avatarUrl" alt="Foto de perfil">
+        </ng-container>
+        <ng-template #avatarFallback>
+          <mat-icon class="profile-menu__avatar profile-menu__avatar--large" aria-hidden="true">
+            account_circle
+          </mat-icon>
+        </ng-template>
+        <div class="profile-menu__identity">
+          <p class="profile-menu__name">{{ vm.displayName }}</p>
+          <p *ngIf="vm.email" class="profile-menu__email">{{ vm.email }}</p>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="goToEditProfile()">
+        <mat-icon aria-hidden="true">edit</mat-icon>
+        Editar perfil
+      </button>
+      <button mat-menu-item (click)="handleLogout()">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  </ng-container>
+</ng-container>
