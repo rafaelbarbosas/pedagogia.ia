@@ -42,6 +42,12 @@
       Exportar atividade
     </button>
   </div>
+  <span
+    #feedbackTrigger="matMenuTrigger"
+    [matMenuTriggerFor]="feedbackMenu"
+    class="feedback-popover-trigger"
+    aria-hidden="true"
+  ></span>
   <p *ngIf="!serieSelecionada || !promptUsuario" class="form-hint">
     Preencha a série alvo e descreva o exercício para liberar a geração.
   </p>
@@ -68,20 +74,26 @@
     <mat-card-content>{{ erroGeracao }}</mat-card-content>
   </mat-card>
 
-  <mat-card *ngIf="feedbackPopoverAberto && geracaoSucesso" class="feedback-card">
-    <div class="feedback-header">
-      <mat-card-title>Esse exercício foi útil para você?</mat-card-title>
-      <button
-        mat-icon-button
-        type="button"
-        class="close-popover"
-        (click)="fecharFeedbackPopover()"
-        aria-label="Fechar feedback"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <mat-card-content>
+  <mat-menu
+    #feedbackMenu="matMenu"
+    panelClass="feedback-popover-panel"
+    xPosition="before"
+    yPosition="above"
+    (closed)="feedbackPopoverAberto = false"
+  >
+    <div class="feedback-card" (click)="$event.stopPropagation()">
+      <div class="feedback-header">
+        <h3 class="feedback-title">Esse exercício foi útil para você?</h3>
+        <button
+          mat-icon-button
+          type="button"
+          class="close-popover"
+          (click)="fecharFeedbackPopover()"
+          aria-label="Fechar feedback"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
       <div class="feedback-options">
         <button
           mat-stroked-button
@@ -128,6 +140,6 @@
         <span *ngIf="feedbackEnviado" class="feedback-status success">Obrigado pelo feedback!</span>
         <span *ngIf="feedbackErro" class="feedback-status error">{{ feedbackErro }}</span>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </mat-menu>
 </section>

@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -33,6 +33,7 @@ import { IaService } from '../../service/ia.service';
   styleUrls: ['./generator-page.component.css']
 })
 export class GeneratorPageComponent {
+  @ViewChild(MatMenuTrigger) feedbackMenuTrigger?: MatMenuTrigger;
   promptUsuario = '';
   respostaIA = '';
   erroGeracao = '';
@@ -68,6 +69,7 @@ export class GeneratorPageComponent {
       this.respostaIA = await this.iaService.gerarExercicio(promptComSerie);
       this.geracaoSucesso = true;
       this.feedbackPopoverAberto = true;
+      setTimeout(() => this.feedbackMenuTrigger?.openMenu());
     } catch (err) {
       this.erroGeracao = 'Erro ao gerar exercício. Tente novamente.';
     } finally {
@@ -135,10 +137,13 @@ export class GeneratorPageComponent {
     this.feedbackEnviando = false;
     this.feedbackEnviado = false;
     this.feedbackErro = '';
+    this.feedbackPopoverAberto = false;
+    this.feedbackMenuTrigger?.closeMenu();
   }
 
   fecharFeedbackPopover() {
     this.feedbackPopoverAberto = false;
+    this.feedbackMenuTrigger?.closeMenu();
   }
 
   private montarConteudoExportacao(): string {
