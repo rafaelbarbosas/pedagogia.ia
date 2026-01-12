@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="!isLoginPage" color="primary" class="site-header">
+<mat-toolbar *ngIf="!isHeaderHidden" color="primary" class="site-header">
   <a class="brand" routerLink="/home" aria-label="Ir para a página inicial">
     <img class="brand__logo" src="logo.svg" alt="Ícone do Pedagogia.IA">
     <div class="brand__text">
@@ -18,7 +18,7 @@
     </a>
   </nav>
 </mat-toolbar>
-<app-header-mobile *ngIf="!isLoginPage"></app-header-mobile>
+<app-header-mobile *ngIf="!isHeaderHidden"></app-header-mobile>
 
 <main class="page-content">
   <router-outlet></router-outlet>

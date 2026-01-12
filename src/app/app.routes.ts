@@ -6,6 +6,8 @@ import { GeneratorPageComponent } from './pages/generator-page/generator-page.co
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { HowToUsePageComponent } from './pages/how-to-use-page/how-to-use-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { RegisterThankYouPageComponent } from './pages/register-thank-you-page/register-thank-you-page.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'gerar-atividades' },
@@ -14,5 +16,7 @@ export const routes: Routes = [
   { path: 'sobre-nos', component: AboutPageComponent },
   { path: 'contato', component: ContactPageComponent },
   { path: 'gerar-atividades', component: GeneratorPageComponent },
-  { path: 'login', component: LoginPageComponent }
+  { path: 'login', component: LoginPageComponent },
+  { path: 'cadastro', component: RegisterPageComponent },
+  { path: 'cadastro/obrigado', component: RegisterThankYouPageComponent }
 ];
