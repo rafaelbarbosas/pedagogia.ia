@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -31,10 +31,12 @@ export class LoginPageComponent {
   email = '';
   senha = '';
   loginErro = '';
-  loginSucesso = false;
   carregando = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   async submitLogin(): Promise<void> {
     if (this.carregando) {
@@ -42,17 +44,20 @@ export class LoginPageComponent {
     }
 
     this.loginErro = '';
-    this.loginSucesso = false;
     this.carregando = true;
 
     try {
-      await firstValueFrom(
+      const response = await firstValueFrom(
         this.http.post(`https://${environment.urlApi}/auth/login`, {
           email: this.email,
           senha: this.senha
         })
       );
-      this.loginSucesso = true;
+      const { access_token: accessToken } = response as { access_token?: string };
+      if (accessToken) {
+        localStorage.setItem('access_token', accessToken);
+      }
+      await this.router.navigate(['/area-do-usuario']);
     } catch (error) {
       this.loginErro = 'Não foi possível fazer login. Verifique seus dados e tente novamente.';
     } finally {

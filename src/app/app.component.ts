@@ -26,7 +26,7 @@ import { HeaderMobileComponent } from './components/header-mobile/header-mobile.
 export class AppComponent {
   currentYear = new Date().getFullYear();
   isHeaderHidden = false;
-  private readonly headerHiddenRoutes = ['/login', '/cadastro'];
+  private readonly headerHiddenRoutes = ['/login', '/cadastro', '/area-do-usuario'];
 
   constructor(private router: Router) {
     this.isHeaderHidden = this.shouldHideHeader(this.router.url);

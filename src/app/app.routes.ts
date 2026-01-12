@@ -8,6 +8,7 @@ import { HowToUsePageComponent } from './pages/how-to-use-page/how-to-use-page.c
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { RegisterThankYouPageComponent } from './pages/register-thank-you-page/register-thank-you-page.component';
+import { UserAreaPageComponent } from './pages/user-area-page/user-area-page.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'gerar-atividades' },
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'contato', component: ContactPageComponent },
   { path: 'gerar-atividades', component: GeneratorPageComponent },
   { path: 'login', component: LoginPageComponent },
+  { path: 'area-do-usuario', component: UserAreaPageComponent },
   { path: 'cadastro', component: RegisterPageComponent },
   { path: 'cadastro/obrigado', component: RegisterThankYouPageComponent }
 ];

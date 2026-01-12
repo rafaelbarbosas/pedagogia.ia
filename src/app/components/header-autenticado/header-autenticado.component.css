@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+app-header-autenticado-mobile {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.brand__logo {
+  width: 44px;
+  height: 44px;
+  display: block;
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.brand__name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand__tagline {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    display: none;
+  }
+
+  app-header-autenticado-mobile {
+    display: block;
+  }
+}
