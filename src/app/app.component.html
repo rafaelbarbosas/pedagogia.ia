@@ -6,12 +6,24 @@
       <span class="brand__tagline">Atividades pedagógicas inteligentes</span>
     </div>
   </div>
-  <nav class="nav-links" aria-label="Navegação principal">
-    <a mat-button routerLink="/home" routerLinkActive="active">Home</a>
-    <a mat-button routerLink="/como-utilizar" routerLinkActive="active">Como utilizar</a>
-    <a mat-button routerLink="/sobre-nos" routerLinkActive="active">Sobre nós</a>
-    <a mat-button routerLink="/contato" routerLinkActive="active">Contato</a>
-    <a mat-button routerLink="/gerar-atividades" routerLinkActive="active" class="nav-cta">Gerar atividades</a>
+  <button
+    mat-button
+    type="button"
+    class="menu-toggle"
+    aria-label="Abrir menu principal"
+    [attr.aria-expanded]="isMenuOpen"
+    (click)="toggleMenu()"
+  >
+    <span class="menu-toggle__bar"></span>
+    <span class="menu-toggle__bar"></span>
+    <span class="menu-toggle__bar"></span>
+  </button>
+  <nav class="nav-links" [class.is-open]="isMenuOpen" aria-label="Navegação principal">
+    <a mat-button routerLink="/home" routerLinkActive="active" (click)="closeMenu()">Home</a>
+    <a mat-button routerLink="/como-utilizar" routerLinkActive="active" (click)="closeMenu()">Como utilizar</a>
+    <a mat-button routerLink="/sobre-nos" routerLinkActive="active" (click)="closeMenu()">Sobre nós</a>
+    <a mat-button routerLink="/contato" routerLinkActive="active" (click)="closeMenu()">Contato</a>
+    <a mat-button routerLink="/gerar-atividades" routerLinkActive="active" class="nav-cta" (click)="closeMenu()">Gerar atividades</a>
   </nav>
 </mat-toolbar>
 
