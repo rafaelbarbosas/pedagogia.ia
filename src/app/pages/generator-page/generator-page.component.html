@@ -33,7 +33,7 @@
       {{ geracaoSucesso ? 'Gerar novamente' : 'Gerar Exercício' }}
     </button>
     <button
-      *ngIf="respostaIA"
+      *ngIf="geracaoSucesso && respostaIA"
       mat-stroked-button
       color="primary"
       [matMenuTriggerFor]="menuExportacao"
@@ -42,6 +42,9 @@
       Exportar atividade
     </button>
   </div>
+  <p *ngIf="!serieSelecionada || !promptUsuario" class="form-hint">
+    Preencha a série alvo e descreva o exercício para liberar a geração.
+  </p>
 
   <mat-menu #menuExportacao="matMenu">
     <button mat-menu-item (click)="exportarTxt()">Baixar .txt</button>
@@ -60,7 +63,12 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card *ngIf="feedbackPopoverAberto && geracaoSucesso" class="feedback-popover">
+  <mat-card *ngIf="erroGeracao" class="error-card">
+    <mat-card-title>Não foi possível gerar o exercício</mat-card-title>
+    <mat-card-content>{{ erroGeracao }}</mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="feedbackPopoverAberto && geracaoSucesso" class="feedback-card">
     <div class="feedback-header">
       <mat-card-title>Esse exercício foi útil para você?</mat-card-title>
       <button
