@@ -57,7 +57,7 @@ export class LoginPageComponent {
       if (accessToken) {
         localStorage.setItem('access_token', accessToken);
       }
-      await this.router.navigate(['/home']);
+      await this.router.navigate(['/area-do-usuario']);
     } catch (error) {
       this.loginErro = 'Não foi possível fazer login. Verifique seus dados e tente novamente.';
     } finally {
