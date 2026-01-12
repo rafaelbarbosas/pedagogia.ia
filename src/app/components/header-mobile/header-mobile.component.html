@@ -1,0 +1,26 @@
+<header class="header-mobile">
+  <img class="header-mobile__logo" src="logo.svg" alt="Ícone do Pedagogia.IA">
+  <button
+    mat-icon-button
+    class="header-mobile__toggle"
+    type="button"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isMenuOpen"
+    aria-controls="mobile-menu"
+    aria-label="Abrir menu"
+  >
+    <span class="header-mobile__icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+</header>
+
+<nav *ngIf="isMenuOpen" id="mobile-menu" class="header-mobile__menu" aria-label="Navegação móvel">
+  <a routerLink="/home" routerLinkActive="active" (click)="closeMenu()">Home</a>
+  <a routerLink="/como-utilizar" routerLinkActive="active" (click)="closeMenu()">Como utilizar</a>
+  <a routerLink="/sobre-nos" routerLinkActive="active" (click)="closeMenu()">Sobre nós</a>
+  <a routerLink="/contato" routerLinkActive="active" (click)="closeMenu()">Contato</a>
+  <a routerLink="/gerar-atividades" routerLinkActive="active" (click)="closeMenu()">Gerar atividades</a>
+</nav>
