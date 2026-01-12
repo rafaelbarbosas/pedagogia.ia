@@ -33,9 +33,9 @@ import { IaService } from '../../service/ia.service';
   styleUrls: ['./generator-page.component.css']
 })
 export class GeneratorPageComponent {
-  promptUsuario =
-    'Crie uma atividade lúdica sobre cores, incluindo objetivo, materiais e passo a passo para a turma.';
+  promptUsuario = '';
   respostaIA = '';
+  erroGeracao = '';
   carregando = false;
   serieSelecionada = '';
   seriesDisponiveis = ['Jardim 1', 'Jardim 2', '1º ano'];
@@ -59,6 +59,7 @@ export class GeneratorPageComponent {
 
     this.carregando = true;
     this.respostaIA = '';
+    this.erroGeracao = '';
     this.geracaoSucesso = false;
     this.resetarFeedback();
     const promptComSerie = `Série alvo: ${this.serieSelecionada}\n\n${this.promptUsuario}`;
@@ -68,7 +69,7 @@ export class GeneratorPageComponent {
       this.geracaoSucesso = true;
       this.feedbackPopoverAberto = true;
     } catch (err) {
-      this.respostaIA = 'Erro ao gerar exercício. Tente novamente.';
+      this.erroGeracao = 'Erro ao gerar exercício. Tente novamente.';
     } finally {
       this.carregando = false;
     }
