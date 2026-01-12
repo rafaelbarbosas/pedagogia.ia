@@ -1,0 +1,107 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.register-card {
+  width: min(720px, 100%);
+  padding: 2.2rem 2.4rem;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+.register-header h1 {
+  margin: 0.5rem 0 0.75rem;
+  font-size: 2rem;
+}
+
+.register-header p {
+  color: #4b5563;
+  margin: 0;
+}
+
+.register-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+
+.register-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.register-passwords {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.register-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.5rem;
+}
+
+.register-message {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.register-message.error {
+  color: #b91c1c;
+}
+
+.register-links {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+}
+
+.login-link {
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover,
+.login-link:focus {
+  text-decoration: underline;
+}
+
+.register-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .register-card {
+    padding: 2rem 1.8rem;
+  }
+
+  .register-passwords {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .register-card {
+    padding: 1.6rem 1.4rem;
+  }
+
+  .register-header h1 {
+    font-size: 1.7rem;
+  }
+}

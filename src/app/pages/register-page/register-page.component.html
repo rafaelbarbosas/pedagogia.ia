@@ -1,0 +1,120 @@
+<section class="register-page">
+  <mat-card class="register-card">
+    <div class="register-header">
+      <p class="register-badge">Crie sua conta</p>
+      <h1>Cadastre-se no Pedagogia.IA</h1>
+      <p>Preencha os dados abaixo para começar a criar atividades pedagógicas inteligentes.</p>
+    </div>
+
+    <form class="register-form" (ngSubmit)="submitRegister(registerForm)" #registerForm="ngForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome completo</mat-label>
+        <input
+          matInput
+          name="nome"
+          [(ngModel)]="nome"
+          required
+          placeholder="Digite seu nome"
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          email
+          #emailControl="ngModel"
+          placeholder="voce@escola.com"
+        >
+        <mat-error *ngIf="emailControl.invalid && emailControl.touched">Informe um email válido.</mat-error>
+      </mat-form-field>
+
+      <div class="register-passwords">
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input
+            matInput
+            type="password"
+            name="senha"
+            [(ngModel)]="senha"
+            required
+            placeholder="Crie uma senha segura"
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirmação de senha</mat-label>
+          <input
+            matInput
+            type="password"
+            name="confirmarSenha"
+            [(ngModel)]="confirmarSenha"
+            required
+            #confirmacaoControl="ngModel"
+            placeholder="Digite novamente"
+          >
+          <mat-error *ngIf="confirmacaoControl.touched && !senhasCoincidem">
+            As senhas não conferem.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Endereço (opcional)</mat-label>
+        <input
+          matInput
+          name="endereco"
+          [(ngModel)]="endereco"
+          placeholder="Rua, número e cidade"
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Escola (opcional)</mat-label>
+        <input
+          matInput
+          name="colegio"
+          [(ngModel)]="colegio"
+          placeholder="Nome da instituição"
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Foto de perfil (opcional)</mat-label>
+        <input
+          matInput
+          type="file"
+          accept="image/*"
+          name="fotoPerfil"
+          (change)="onFotoPerfilSelecionada($event)"
+        >
+        <mat-hint *ngIf="fotoPerfilNome">Arquivo selecionado: {{ fotoPerfilNome }}</mat-hint>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="register-submit"
+        [disabled]="carregando || !registerForm.form.valid || !senhasCoincidem"
+      >
+        <mat-icon>person_add</mat-icon>
+        {{ carregando ? 'Criando conta...' : 'Cadastrar' }}
+      </button>
+
+      <p *ngIf="erroCadastro" class="register-message error">{{ erroCadastro }}</p>
+    </form>
+
+    <div class="register-links">
+      <a routerLink="/login" class="login-link">Já tem conta? Fazer login</a>
+      <a mat-stroked-button color="primary" routerLink="/home" class="register-home">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para a home
+      </a>
+    </div>
+  </mat-card>
+</section>
