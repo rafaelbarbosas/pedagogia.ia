@@ -62,7 +62,7 @@ export class RegisterPageComponent {
 
     try {
       await firstValueFrom(
-        this.http.post(`${environment.urlApi}/auth/register`, {
+        this.http.post(`https://${environment.urlApi}/auth/register`, {
           email: this.email,
           senha: this.senha,
           nome: this.nome,
