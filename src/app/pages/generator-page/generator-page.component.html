@@ -4,61 +4,106 @@
     <p>Defina a série alvo e descreva a atividade para receber sugestões prontas para sala de aula.</p>
   </div>
 
-  <div class="form-grid">
-    <mat-form-field appearance="outline" class="serie-box">
-      <mat-label>Série alvo</mat-label>
-      <mat-select [(ngModel)]="serieSelecionada" placeholder="Selecione a série">
-        <mat-option *ngFor="let serie of seriesDisponiveis" [value]="serie">{{ serie }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="prompt-box">
-      <mat-label>Descreva o exercício desejado</mat-label>
-      <textarea
-        matInput
-        rows="4"
-        [(ngModel)]="promptUsuario"
-        placeholder="Ex: Atividade sobre cores para Jardim 1 com objetivos e materiais"
-      ></textarea>
-    </mat-form-field>
+  <div class="panel-toggle" role="tablist" aria-label="Alternar entre entrada e resultado">
+    <button
+      type="button"
+      class="panel-tab"
+      [class.active]="painelAtivo === 'input'"
+      (click)="painelAtivo = 'input'"
+      [attr.aria-pressed]="painelAtivo === 'input'"
+    >
+      Entrada
+    </button>
+    <button
+      type="button"
+      class="panel-tab"
+      [class.active]="painelAtivo === 'output'"
+      (click)="painelAtivo = 'output'"
+      [attr.aria-pressed]="painelAtivo === 'output'"
+    >
+      Resultado
+    </button>
   </div>
+  <p class="swipe-hint">Arraste para o lado para alternar entre entrada e resultado.</p>
 
-  <div class="actions">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="gerar()"
-      [disabled]="carregando || !promptUsuario || !serieSelecionada"
-    >
-      {{ geracaoSucesso ? 'Gerar novamente' : 'Gerar Exercício' }}
-    </button>
-    <button
-      *ngIf="respostaIA"
-      mat-stroked-button
-      color="primary"
-      [matMenuTriggerFor]="menuExportacao"
-      [disabled]="carregando"
-    >
-      Exportar atividade
-    </button>
+  <div class="generator-layout" (touchstart)="iniciarSwipe($event)" (touchend)="finalizarSwipe($event)">
+    <section class="panel input-panel" [class.panel-active]="painelAtivo === 'input'">
+      <div class="panel-header">
+        <h2>Entrada da atividade</h2>
+        <p>Descreva o objetivo da atividade e a série para gerar uma proposta personalizada.</p>
+      </div>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="serie-box">
+          <mat-label>Série alvo</mat-label>
+          <mat-select [(ngModel)]="serieSelecionada" placeholder="Selecione a série">
+            <mat-option *ngFor="let serie of seriesDisponiveis" [value]="serie">{{ serie }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="prompt-box">
+          <mat-label>Descreva o exercício desejado</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            [(ngModel)]="promptUsuario"
+            placeholder="Ex: Atividade sobre cores para Jardim 1 com objetivos e materiais"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="gerar()"
+          [disabled]="carregando || !promptUsuario || !serieSelecionada"
+        >
+          {{ geracaoSucesso ? 'Gerar novamente' : 'Gerar Exercício' }}
+        </button>
+      </div>
+    </section>
+
+    <section class="panel output-panel" [class.panel-active]="painelAtivo === 'output'">
+      <div class="panel-header">
+        <h2>Resultado gerado</h2>
+        <p>Confira a proposta e exporte quando estiver pronto.</p>
+      </div>
+
+      <div *ngIf="carregando" class="loading-state">
+        <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
+        <span>Gerando sugestões...</span>
+      </div>
+
+      <div *ngIf="!carregando && !respostaIA" class="empty-state">
+        <h3>Seu exercício aparecerá aqui</h3>
+        <p>Complete as informações ao lado e clique em “Gerar Exercício”.</p>
+      </div>
+
+      <mat-card *ngIf="respostaIA" class="resposta-card">
+        <mat-card-title>Exercício Sugerido:</mat-card-title>
+        <mat-card-content>
+          <div [innerHTML]="textoFormatado" class="markdown-content"></div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="output-actions" *ngIf="respostaIA">
+        <button
+          mat-stroked-button
+          color="primary"
+          [matMenuTriggerFor]="menuExportacao"
+          [disabled]="carregando"
+        >
+          Exportar atividade
+        </button>
+      </div>
+    </section>
   </div>
 
   <mat-menu #menuExportacao="matMenu">
     <button mat-menu-item (click)="exportarTxt()">Baixar .txt</button>
     <button mat-menu-item (click)="exportarPdf()">Baixar .pdf</button>
   </mat-menu>
-
-  <div *ngIf="carregando" class="loading-state">
-    <mat-progress-spinner diameter="36" mode="indeterminate"></mat-progress-spinner>
-    <span>Gerando sugestões...</span>
-  </div>
-
-  <mat-card *ngIf="respostaIA" class="resposta-card">
-    <mat-card-title>Exercício Sugerido:</mat-card-title>
-    <mat-card-content>
-      <div [innerHTML]="textoFormatado" class="markdown-content"></div>
-    </mat-card-content>
-  </mat-card>
 
   <mat-card *ngIf="feedbackPopoverAberto && geracaoSucesso" class="feedback-popover">
     <div class="feedback-header">

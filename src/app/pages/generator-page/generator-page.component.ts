@@ -46,6 +46,9 @@ export class GeneratorPageComponent {
   feedbackErro = '';
   feedbackPopoverAberto = false;
   geracaoSucesso = false;
+  painelAtivo: 'input' | 'output' = 'input';
+  private swipeStartX = 0;
+  private swipeStartY = 0;
 
   constructor(
     private iaService: IaService,
@@ -61,6 +64,7 @@ export class GeneratorPageComponent {
     this.respostaIA = '';
     this.geracaoSucesso = false;
     this.resetarFeedback();
+    this.painelAtivo = 'output';
     const promptComSerie = `Série alvo: ${this.serieSelecionada}\n\n${this.promptUsuario}`;
 
     try {
@@ -138,6 +142,34 @@ export class GeneratorPageComponent {
 
   fecharFeedbackPopover() {
     this.feedbackPopoverAberto = false;
+  }
+
+  iniciarSwipe(evento: TouchEvent) {
+    if (evento.touches.length !== 1) {
+      return;
+    }
+
+    const touch = evento.touches[0];
+    this.swipeStartX = touch.clientX;
+    this.swipeStartY = touch.clientY;
+  }
+
+  finalizarSwipe(evento: TouchEvent) {
+    if (!this.swipeStartX || evento.changedTouches.length !== 1) {
+      return;
+    }
+
+    const touch = evento.changedTouches[0];
+    const deltaX = touch.clientX - this.swipeStartX;
+    const deltaY = touch.clientY - this.swipeStartY;
+    const limite = 60;
+
+    if (Math.abs(deltaX) > limite && Math.abs(deltaX) > Math.abs(deltaY) + 10) {
+      this.painelAtivo = deltaX < 0 ? 'output' : 'input';
+    }
+
+    this.swipeStartX = 0;
+    this.swipeStartY = 0;
   }
 
   private montarConteudoExportacao(): string {
