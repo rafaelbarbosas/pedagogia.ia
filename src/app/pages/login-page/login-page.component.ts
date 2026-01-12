@@ -47,7 +47,7 @@ export class LoginPageComponent {
 
     try {
       await firstValueFrom(
-        this.http.post(`${environment.urlApi}/auth/login`, {
+        this.http.post(`https://${environment.urlApi}/auth/login`, {
           email: this.email,
           senha: this.senha
         })
