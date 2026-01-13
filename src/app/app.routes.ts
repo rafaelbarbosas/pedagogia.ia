@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { AboutPageComponent } from './pages/about-page/about-page.component';
+import { AuthCallbackPageComponent } from './pages/auth-callback-page/auth-callback-page.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { GeneratorPageComponent } from './pages/generator-page/generator-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'sobre-nos', component: AboutPageComponent },
   { path: 'contato', component: ContactPageComponent },
   { path: 'gerar-atividades', component: GeneratorPageComponent },
+  { path: 'auth/callback', component: AuthCallbackPageComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'area-do-usuario', component: UserAreaPageComponent },
   { path: 'cadastro', component: RegisterPageComponent },

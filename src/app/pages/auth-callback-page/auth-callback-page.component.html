@@ -1,0 +1,22 @@
+<section class="auth-callback-page">
+  <mat-card class="auth-callback-card">
+    <div class="auth-callback-icon" [class.auth-callback-icon--error]="status === 'error'">
+      <mat-icon>
+        {{ status === 'success' ? 'mark_email_read' : status === 'error' ? 'error' : 'hourglass_empty' }}
+      </mat-icon>
+    </div>
+    <h1>Confirmação de e-mail</h1>
+    <p>{{ mensagem }}</p>
+
+    <div class="auth-callback-actions" *ngIf="status !== 'loading'">
+      <a mat-raised-button color="primary" routerLink="/login">
+        <mat-icon>login</mat-icon>
+        Ir para o login
+      </a>
+      <a mat-stroked-button color="primary" routerLink="/home">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar para a home
+      </a>
+    </div>
+  </mat-card>
+</section>

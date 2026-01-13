@@ -1,0 +1,42 @@
+.auth-callback-page {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+}
+
+.auth-callback-card {
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.auth-callback-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: #2e7d32;
+  margin: 0 auto 16px;
+  font-size: 36px;
+}
+
+.auth-callback-icon--error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.auth-callback-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+mat-icon {
+  font-size: 32px;
+}
