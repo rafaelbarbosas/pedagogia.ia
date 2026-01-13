@@ -1,4 +1,6 @@
 export const environment = {
     production: true,
-    urlApi: 'pedagogia-ia-api.vercel.app'
+    urlApi: 'pedagogia-ia-api.vercel.app',
+    supabaseUrl: '',
+    supabaseAnonKey: ''
 };
