@@ -68,7 +68,8 @@ export class RegisterPageComponent {
           nome: this.nome,
           endereco: endereco || null,
           colegio: colegio || null,
-          foto_perfil: fotoPerfil || null
+          foto_perfil: fotoPerfil || null,
+          email_redirect_to: `https://${environment.urlApi}/auth/callback`
         })
       );
       await this.router.navigate(['/cadastro/obrigado']);
