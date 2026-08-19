@@ -12,6 +12,9 @@ P0
 S
 ## Tipo
 PARALELIZÁVEL
+## Classificação
+PRONTO — Wave 1 pós-monorepo.
+
 ## Objetivo
 Criar uma rede mínima de segurança antes de remover geração e autenticação.
 ## Contexto
@@ -24,7 +27,7 @@ P001, P002.
 SIM.
 
 Pode executar em paralelo com:
-- P011
+- P015
 ## Área afetada
 frontend; testes; documentação.
 ## Instruções para o Codex

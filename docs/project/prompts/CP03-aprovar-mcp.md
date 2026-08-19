@@ -12,9 +12,14 @@ P0
 XS
 ## Tipo
 CHECKPOINT
+## Classificação
+PRECISA REFINAMENTO — checkpoint humano pós-monorepo.
+
 ## Objetivo
 Obter e registrar decisão humana explícita antes da implementação.
 ## Contexto
+O FastAPI real está em `backend/api/main.py` e ainda não tem domínio/repository reutilizável. Recomenda-se MCP em `backend/mcp/`, com entrypoint/transporte próprio e services compartilhados; confirmar transporte e compatibilidade de deploy sem criar microserviço por padrão.
+
 As alternativas, vantagens, desvantagens e recomendação estão em `docs/project/ARCHITECTURE.md`.
 ## Pré-requisitos
 P001 e P002 revisados.

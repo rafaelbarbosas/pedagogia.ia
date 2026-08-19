@@ -1,187 +1,100 @@
 # Arquitetura — Pedagogia.IA
 
-## Estado e linguagem documental
+## Estado documental
 
-Este documento separa explicitamente o que **existe**, o que está **implementado hoje** e o que é **alvo aprovado apenas conceitualmente**. Itens propostos não devem ser tratados como disponíveis.
+Auditado em 2026-08-19 após a consolidação. **Atual** descreve código versionado; **transição** descreve remoção/adaptação planejada; **alvo** não deve ser lido como implementado. Decisões aceitas permanecem em `docs/adr/`.
 
-## Arquitetura atual (auditada em 2026-08-19)
-
-Este repositório contém somente uma aplicação Angular 19 standalone na raiz. O backend existe separadamente no repositório/infraestrutura `pedagogia.ia-api`, conforme confirmação humana de 2026-08-19. Esse segundo checkout não está montado nem disponível entre os recursos desta sessão, portanto seu código ainda não foi auditado. Neste repositório frontend não há código Python, models, schemas, routers, migrations, banco local, MCP, Skills, GitHub Actions ou testes de integração.
+## Arquitetura atual real
 
 ```text
 Browser
-  └─ Angular 19 (raiz do monorepo)
-       ├─ páginas públicas institucionais
-       ├─ gerador antigo ──HTTP──> API externa configurada
-       ├─ feedback antigo ─HTTP──> API externa configurada
-       └─ autenticação antiga ────> API externa/Supabase
-
-Vercel: somente regra de rota mínima
-Backend atual: repositório/infraestrutura separado `pedagogia.ia-api`
-Banco/MCP/Skills: não observados neste checkout
+  └─ frontend/ — Angular 19 standalone
+       ├─ páginas institucionais
+       ├─ gerador + feedback ───────┐
+       └─ auth/área do usuário ─────┤ HTTP
+                                    v
+backend/ — FastAPI monolítico (`api/main.py`), Vercel Python
+  ├─ POST /gerar ──HTTP direto──> OpenAI (`gpt-4`)
+  ├─ /feedback, /auth/* e /activities
+  └─ HTTP Supabase Auth/REST ───> PostgreSQL/Supabase
+       └─ schema.sql: profiles, activities, anonymous_requests, feedback
 ```
 
-### Angular atual
+### Frontend
 
-- Rotas: `/home`, `/como-utilizar`, `/sobre-nos`, `/contato`, `/gerar-atividades`, callback, login, área do usuário, cadastro e agradecimento; a raiz redireciona ao gerador.
-- `IaService` chama `POST /gerar` e `POST /feedback` em host configurável.
-- `GeneratorPageComponent` concentra geração, feedback, limite de uso, renderização Markdown e exportação TXT/PDF.
-- Autenticação chama `/auth/login`, `/auth/register`, `/auth/logout`, `/auth/me` e consulta Supabase no callback; token fica em `localStorage`.
-- Headers e menus alternam conforme sessão autenticada.
-- Testes existentes: smoke tests de criação do componente raiz e do `IaService`; o teste do service não configura `HttpClient` e não cobre contratos.
+- Angular standalone em `frontend/`; rotas públicas, geração, login/cadastro/callback e área autenticada coexistem.
+- `IaService` consome `/gerar` e `/feedback`; `AuthSessionService` e páginas de conta consomem `/auth/*`; callback acessa Supabase diretamente.
+- Produção aponta para `pedagogia-ia-api.vercel.app`. `frontend/vercel.json` não oferece fallback SPA geral.
+- Só há smoke specs superficiais; não existem E2E ou workflow CI.
 
-### Infraestrutura atual
+### Backend FastAPI
 
-- `package.json` oferece start, build, watch e teste.
-- `vercel.json` contém apenas uma rota para `/`; não documenta deploy do backend nem fallback completo de SPA.
-- As environments configuram um host remoto de API em produção e valores vazios de Supabase.
-- Não há workflows de CI, arquivos de container, configuração Neon, migrations ou gerenciador Python.
+- Um entrypoint, sem routers/services/repositories/models ORM: `backend/api/main.py` concentra 13 rotas, 8 schemas Pydantic, helpers, logs e integrações.
+- CORS lê `ALLOW_ORIGINS`, permite credenciais/métodos/headers amplos. Há handlers FastAPI padrão, sem política de erro própria.
+- Logs incluem prompt e, no cadastro, payload com senha. Erros do Supabase podem vazar corpo remoto. Isso exige correção durante a retirada/hardening, não uma mudança silenciosa de escopo.
+- Não existe health check. `favicon` é o único GET público sem integração; `/feedback` é público e grava, e `/gerar` é público/auth opcional.
+- Dependências: FastAPI, httpx, dotenv, uvicorn e asyncpg. `httpx` é usado; `asyncpg` não é usado.
 
-## Arquitetura já implementada
+### Banco
 
-Somente o frontend Angular e seus assets/configurações estão implementados e versionados **neste checkout**. As páginas institucionais, layout responsivo e partes de exportação local podem ser reaproveitados após revisão. O backend citado pelas URLs pertence ao repositório separado `pedagogia.ia-api`; até que ele seja disponibilizado nesta sessão, não é possível afirmar quais partes de FastAPI, banco e infraestrutura já estão implementadas.
+- A aplicação usa Supabase Auth/REST via HTTP. Não há `DATABASE_URL`, pool, repository ou migration runner.
+- `backend/supabase/schema.sql` é snapshot/script idempotente, não histórico de migrations. `profiles` depende de `auth.users`; `activities` guarda prompt/resposta e usuário; `anonymous_requests` guarda IP/rota; `feedback` guarda prompt/resposta/avaliação.
+- RLS existe apenas em `profiles` e `activities`; o acesso de feedback/limite depende da key configurada. O código aceita service-role como preferência, ampliando impacto de configuração incorreta.
+- Não há seed, fixture, dump ou evidência versionada de dados existentes. Produção precisa ser confirmada antes de descarte/migração.
 
-## Inventário da integração antiga
+### Infraestrutura e testes
 
-| Área | Evidência/contrato | Impacto |
-|---|---|---|
-| Geração | `IaService.gerarExercicio()` → `POST /gerar` | Fluxo central incompatível com o MVP |
-| Feedback | `IaService.enviarFeedback()` → `POST /feedback` | Persiste prompt/resposta potencialmente sensíveis; fora do MVP |
-| Interface | `GeneratorPageComponent` e rota padrão | Aplicação atua como gerador/chat próprio |
-| Autenticação | login, cadastro, callback, sessão, área e headers autenticados | Fora do MVP; amplia superfície e dados pessoais |
-| Configuração | `urlApi`, `supabaseUrl`, `supabaseAnonKey` | Configuração antiga a remover em etapas |
-| Pacotes | Nenhum SDK OpenAI no `package.json` do frontend | A integração OpenAI provável está no backend separado ainda não auditado |
-| Backend/testes/mocks/CI/docs | Repositório separado conhecido: `pedagogia.ia-api`; checkout indisponível nesta sessão | Lacuna de auditoria; auditar o segundo repositório e a infraestrutura antes de afirmar remoção completa |
+- Dois projetos Vercel são presumidos pelos dois `vercel.json`; Root Directory precisa ser `frontend/` ou `backend/`. Configuração remota não foi auditada.
+- Não há `.github/`, Docker, CI/CD, testes Python, cobertura, lock Python ou configuração Neon.
+- `backend/vercel.json` roteia tudo ao entrypoint; `frontend/vercel.json` só declara `/`.
 
-## Código reaproveitável
+## Estado de transição
 
-- Shell Angular, estilos globais, assets, páginas institucionais e responsividade.
-- Exportação client-side pode virar exemplo/utility apenas se houver valor para o site; não é requisito central.
-- `HttpClient` e configuração standalone podem atender futuramente endpoints públicos.
-- Componentes devem ser reaproveitados seletivamente; conteúdo que promete geração própria precisa ser reescrito.
+1. Caracterizar frontend e backend separadamente (P010/P015).
+2. Remover geração/feedback em fatias coordenadas, mas branches separadas (P012/P016).
+3. Remover auth/contas/CRUD privado no frontend e backend (P013/P017).
+4. Auditar resíduos em todo o monorepo (P014); somente então declarar o legado removido.
+5. Confirmar destino dos dados legados (P019/CP05) antes de migrations destrutivas.
+6. Adaptar a aplicação FastAPI existente: health, módulos de domínio e leitura pública; não recriar backend.
 
-## Código obsoleto ou candidato à remoção incremental
+O schema legado não será promovido ao modelo alvo por inércia. `activities` pode inspirar identidade/timestamps, mas campos generativos e `user_id` contradizem conteúdo público anônimo. Nenhuma migration será implementada antes de CP01.
 
-- Gerador, `IaService`, feedback e mensagens de limite de geração.
-- Login, cadastro, callback, sessão, área autenticada e componentes de autenticação.
-- Campos Supabase e contratos `/auth/*`, `/gerar`, `/feedback`.
-- Dependência `marked` se nenhum conteúdo estático ou exemplo continuar exigindo Markdown.
-- CTA e textos que direcionam ao gerador próprio.
-
-Nada deve ser removido em big bang: primeiro caracterizar build/testes, depois isolar rotas e remover fatias verificáveis.
-
-## Arquitetura alvo mínima (planejada; não implementada)
+## Arquitetura alvo mínima (planejada)
 
 ```text
 Professor
-  ├─ ChatGPT
-  │    ├─ Skills pedagógicas (arquivos versionados)
-  │    └─ MCP read-only
-  │          └─ adaptador MCP no mesmo backend/processo quando viável
+  ├─ ChatGPT + Skills versionadas
+  │             └─ MCP read-only
   └─ Angular estático (vitrine/tutorial)
 
-FastAPI (um serviço)
-  ├─ health
-  ├─ API pública read-only
-  ├─ regras de consulta compartilhadas com MCP
-  └─ acesso PostgreSQL
-           └─ Neon PostgreSQL
+backend/
+  ├─ API FastAPI pública read-only + /health
+  ├─ MCP (entrypoint/transporte separado)
+  ├─ services/repositories compartilhados
+  └─ PostgreSQL (preferência Neon)
 ```
 
-### Princípios alvo
+- Angular não terá chat, geração, feedback, auth ou contas.
+- FastAPI não chamará OpenAI nem persistirá prompts/IP/tokens; oferecerá health e leitura pública.
+- MCP terá apenas busca e recuperação aprovadas no CP03. Recomendação: ficar em `backend/mcp/`, compartilhando domínio/repository sem obrigar mesmo processo de deploy.
+- Conteúdo será público, anônimo e carregado por migration/seed versionado. Sem BNCC estruturada, embeddings ou escrita MCP.
 
-- Monorepo com diretórios claros para frontend, backend, Skills e documentação. Como frontend e backend estão hoje em repositórios separados, a consolidação deve ser incremental: primeiro auditar `pedagogia.ia-api`, depois escolher uma direção de importação com histórico/rastreabilidade e somente então alterar deploys.
-- Um único backend FastAPI. MCP no mesmo deploy/processo se compatível com o transporte exigido pelo ChatGPT; nenhum microserviço novo por padrão.
-- Repository/service simples compartilhado por API e MCP, evitando duplicar consultas.
-- SQL parametrizado e filtros indexáveis antes de FTS; sem embeddings ou banco vetorial.
-- Conteúdo somente leitura em runtime; carga editorial via migration/seed versionado, não via MCP.
-- Sem autenticação, cookies próprios, perfis ou conteúdo privado no MVP.
+## Modelo de dados: comparação e checkpoint
 
-## Modelo de dados — alternativas para decisão conjunta
+As alternativas originais continuam pendentes no CP01. O backend não elimina essa decisão:
 
-### Alternativa A — uma tabela estruturada com JSONB
+- **A — tabela estruturada + JSONB:** simples, mas filtros/evolução mais frágeis.
+- **B — núcleo relacional enxuto (recomendada):** `activities`, steps, materials, tags e join; grade/subject controlados e objetivos/variações estruturados.
+- **C — domínio amplamente normalizado:** integridade maior, complexidade prematura.
 
-`activities`: `id`, `slug`, `title`, `summary`, `grade` (enum/check), `subject`, `topic`, `difficulty`, `duration_minutes`, `objectives jsonb`, `materials jsonb`, `steps jsonb`, `variations jsonb`, `methodology`, `created_at`, `updated_at`, `published`.
+O schema Supabase atual não equivale a nenhuma alternativa: sua tabela `activities` armazena entrada/saída generativa privada. Reuso seguro limita-se a conceitos de UUID/timestamps. CP01 deve aprovar o contrato; CP05, criado pela auditoria, decide retenção/exportação/descarte dos dados legados caso produção contenha registros.
 
-- **Relações:** nenhuma no MVP.
-- **Vantagens:** migration e consultas simples; conteúdo ainda possui seções; seed fácil.
-- **Desvantagens:** filtros de tags e evolução taxonômica ficam frágeis; arrays JSONB têm validação/índices menos óbvios.
-- **Impacto futuro:** futura normalização exige migration de dados.
+## Skills e MCP
 
-### Alternativa B — núcleo relacional enxuto (recomendada)
+As opções de Skills permanecem: uma central; várias independentes; ou central + especializadas (recomendada). O backend não trouxe Skills nem muda CP02.
 
-- `activities`: identidade, título, resumo, `grade`, `subject`, tema, dificuldade, duração, metodologia textual, status público e timestamps.
-- `activity_steps`: `activity_id`, `position`, `instruction`.
-- `activity_materials`: `activity_id`, `position`, `name`, `quantity_or_note` opcional.
-- `tags`: `id`, `slug`, `name`; `activity_tags`: N:N.
-- Objetivos e variações ficam em `text[]` ou JSONB validado no primeiro contrato, evitando tabelas prematuras.
+Para MCP, a recomendação funcional permanece `search_activities` + `get_activity`, read-only, com limites e erros tipados. O monólito real reforça a necessidade de extrair repository/service compartilhado antes do MCP. CP03 deve confirmar contrato e transporte/deploy; a localização sugerida é `backend/mcp/`, não um novo projeto por padrão.
 
-- **Relações:** activity 1:N steps/materials; activity N:N tags.
-- **Vantagens:** preserva ordem e estrutura, permite bons filtros, mantém apenas cinco tabelas e evolui bem.
-- **Desvantagens:** joins e seed um pouco maiores; `grade`/`subject` textuais exigem checks ou validação na aplicação.
-- **Impacto futuro:** grades/subjects/metodologias podem virar tabelas somente quando governança/taxonomia justificar.
+## Limites de confiança
 
-### Alternativa C — domínio amplamente normalizado
-
-Além da alternativa B, cria `grades`, `subjects`, `methodologies`, `pedagogical_objectives` e `activity_variations`.
-
-- **Vantagens:** integridade referencial e taxonomias reutilizáveis.
-- **Desvantagens:** alto custo editorial e de joins para uma base pequena; decisões de taxonomia e BNCC prematuras.
-- **Impacto futuro:** flexível em escala, mas cria complexidade antes da validação.
-
-### Recomendação
-
-Aprovar a **Alternativa B**, mantendo `grade` e `subject` como valores controlados pela aplicação/migration e objetivos/variações como arrays estruturados. Ela equilibra consulta, estrutura e YAGNI. Antes da migration, decidir IDs, campos obrigatórios, enumerações, limites e formato dos arrays.
-
-## Skills — alternativas para decisão conjunta
-
-### A — uma Skill central
-
-Uma Skill cobre gerar, planejar, adaptar, variar e avaliar. Menor instalação e pouca sobreposição, mas tende a crescer, reduzir precisão de seleção e dificultar testes isolados.
-
-### B — várias Skills independentes
-
-Uma por capacidade. Modular e testável, porém repete regras de faixa etária, aumenta manutenção e pode gerar seleção/conflitos ambíguos.
-
-### C — central + especializadas (recomendada)
-
-Uma Skill central de atividades pedagógicas reúne princípios, coleta de contexto e roteamento; inicialmente duas especializadas: `planejar-atividade` (inclui materiais, passos e variações) e `adaptar-atividade` (idade, dificuldade e recursos). Sequência didática e avaliação tornam-se Skills somente após evidência.
-
-- **Manutenção:** regras compartilhadas centralizadas.
-- **Qualidade/testes:** contratos e casos reproduzíveis por fluxo.
-- **Complexidade:** moderada e controlável com apenas três Skills iniciais.
-- **Risco:** roteamento/sobreposição exigem exemplos negativos e regra clara de precedência.
-
-## MCP tools — proposta para decisão conjunta
-
-### `search_activities` (necessária)
-
-- **Responsabilidade:** buscar/listar atividades com uma única interface.
-- **Inputs:** `query?`, `grade?`, `subject?`, `topic?`, `difficulty?`, `tags?`, `limit?`, `cursor?`.
-- **Output:** itens resumidos (`id`, título, resumo, etapa, tema, dificuldade, duração, tags) e paginação.
-- **Motivo:** substitui `list_activities`, `search_by_grade` e `search_by_topic`; filtros opcionais eliminam redundância.
-- **Simplificação:** começar sem cursor se o acervo inicial e limite máximo forem pequenos; não prometer ranking inteligente.
-
-### `get_activity` (necessária)
-
-- **Responsabilidade:** recuperar uma atividade pública completa por ID/slug canônico.
-- **Inputs:** exatamente um identificador conforme contrato aprovado.
-- **Output:** campos, objetivos, materiais, passos ordenados, variações, metodologia e metadados públicos.
-- **Erros:** retorno tipado para inexistente/inválido, sem stack trace ou dados internos.
-- **Motivo:** mantém resultados de busca leves e permite detalhamento explícito.
-
-### Tools não recomendadas no MVP
-
-`list_activities`, `search_by_grade` e `search_by_topic` duplicam filtros. `get_activity_recommendations` implica ranking/recomendação não validado e pode ser atendido pelo raciocínio do ChatGPT sobre os resultados de busca.
-
-## CHECKPOINT HUMANO — MODELO DE DADOS
-
-**Pendente.** Escolher A, B (recomendada) ou C e confirmar: formato de ID, vocabulários de grade/subject/difficulty, campos obrigatórios e representação de objetivos/variações. Não criar models/migrations antes do registro da decisão.
-
-## CHECKPOINT HUMANO — SKILLS
-
-**Pendente.** Escolher A, B ou C (recomendada) e confirmar nomes, fronteiras e estrutura de saída. Não criar Skills antes do registro da decisão.
-
-## CHECKPOINT HUMANO — MCP TOOLS
-
-**Pendente.** Aprovar `search_activities` + `get_activity`, filtros e estratégia ID/slug/paginação. Não implementar MCP antes do registro da decisão.
+Esta auditoria cobre Git. Não confirma banco/dados de produção, variáveis Vercel, domínios, logs/retention remotos nem histórico do repositório backend anterior. Esses itens aparecem no backlog como verificação humana/infra, sem sondagem de produção nesta tarefa.

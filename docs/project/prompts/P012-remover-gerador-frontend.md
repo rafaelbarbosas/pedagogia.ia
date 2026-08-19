@@ -11,19 +11,22 @@ P0
 ## Complexidade
 M
 ## Tipo
-SEQUENCIAL
+PARALELIZÁVEL
 ## Objetivo
 Remover incrementalmente gerador, service e feedback após testes e inventário; substituir a rota inicial por página institucional existente/provisória, sem implementar o redesign final.
+## Classificação
+PRONTO — Wave 2 pós-monorepo.
+
 ## Contexto
 A interface atual contradiz o MVP. A remoção deve ser pequena, reversível e protegida por testes de caracterização.
 ## Pré-requisitos
 Reler código, inventário, ADRs e resultados das tarefas dependentes; refinar este prompt antes de executar.
 ## Dependências
-P010, P011.
+P010 e P015 em DONE.
 ## Pode executar em paralelo?
-NÃO.
+SIM, somente com P016 em `backend/`.
 
-Conflitos esperados com: P013.
+Executar em paralelo com P016 (arquivos separados); P013 permanece sequencial após P012.
 ## Área afetada
 frontend; testes; documentação.
 ## Instruções para o Codex

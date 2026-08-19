@@ -1,47 +1,53 @@
-# Backlog executável
+# Backlog executável reconciliado
 
 ## Convenções
 
-Status: `TODO`, `BLOCKED`, `READY`, `IN_PROGRESS`, `REVIEW`, `DONE`, `CANCELLED`. Implementações terminadas pelo Codex ficam em `REVIEW`; somente aprovação humana as move para `DONE`.
+Status: `TODO`, `BLOCKED`, `READY`, `IN_PROGRESS`, `REVIEW`, `DONE`, `CANCELLED`. Implementação concluída fica em `REVIEW`; somente aprovação humana move para `DONE`. Esta reconciliação não iniciou nenhuma Wave.
 
 | ID | Título | Status | Fase | Prioridade | Complexidade | Tipo | Wave | Dependências | Paralelo com | Decisão humana | Prompt |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| P001 | Auditar checkout atual | REVIEW | 0 | P0 | S | BLOQUEADOR | 0 | — | P002 | Não | [P001](prompts/P001-auditar-checkout.md) |
-| P002 | Estruturar documentação e ADRs definidos | REVIEW | 1 | P0 | M | SEQUENCIAL | 0 | — | P001 | Não | [P002](prompts/P002-documentar-arquitetura.md) |
-| CP01 | Aprovar modelo mínimo de dados | BLOCKED | 1 | P0 | XS | CHECKPOINT | C1 | P001, P002 | CP02, CP03 | **Sim** | [CP01](prompts/CP01-aprovar-modelo-dados.md) |
+| P001 | Auditar checkout frontend original | REVIEW | 0 | P0 | S | BLOQUEADOR | 0 | — | P002 | Revisar | [P001](prompts/P001-auditar-checkout.md) |
+| P002 | Estruturar documentação e ADRs definidos | REVIEW | 1 | P0 | M | SEQUENCIAL | 0 | — | P001 | Revisar | [P002](prompts/P002-documentar-arquitetura.md) |
+| CP01 | Aprovar modelo mínimo de dados à luz do schema legado | BLOCKED | 1 | P0 | XS | CHECKPOINT | C1 | P001, P002 | CP02, CP03 | **Sim** | [CP01](prompts/CP01-aprovar-modelo-dados.md) |
 | CP02 | Aprovar arquitetura inicial de Skills | BLOCKED | 1 | P0 | XS | CHECKPOINT | C1 | P001, P002 | CP01, CP03 | **Sim** | [CP02](prompts/CP02-aprovar-skills.md) |
-| CP03 | Aprovar contrato inicial MCP | BLOCKED | 1 | P0 | XS | CHECKPOINT | C1 | P001, P002 | CP01, CP02 | **Sim** | [CP03](prompts/CP03-aprovar-mcp.md) |
-| P010 | Caracterizar build e ampliar testes de regressão Angular | TODO | 2 | P0 | S | PARALELIZÁVEL | 1 | P001, P002 | P011 | Não | [P010](prompts/P010-testes-regressao-angular.md) |
-| P011 | Auditar `pedagogia.ia-api` e fechar inventário OpenAI | BLOCKED | 2 | P0 | M | PARALELIZÁVEL | 1 | P001, P002 | P010 | **Disponibilizar checkout/acesso** | [P011](prompts/P011-inventario-backend-externo.md) |
-| P011A | Definir consolidação incremental dos repositórios | BLOCKED | 2 | P0 | S | CHECKPOINT | C1.5 | P011 | — | **Sim: estratégia de migração/deploy** | A refinar após P011 |
-| P012 | Remover rota/UI de geração e feedback | TODO | 2 | P0 | M | SEQUENCIAL | 2 | P010, P011, P011A | — | Não | [P012](prompts/P012-remover-gerador-frontend.md) |
-| P013 | Remover autenticação e Supabase do Angular | TODO | 2 | P0 | M | SEQUENCIAL | 2 | P010, P011, P011A | — | Não | [P013](prompts/P013-remover-auth-frontend.md) |
-| P014 | Auditar resíduos OpenAI/auth no monorepo | TODO | 2 | P0 | S | BLOQUEADOR | 3 | P012, P013 | — | Não | A refinar |
-| P020 | Definir contrato de domínio aprovado | BLOCKED | 3 | P0 | S | BLOQUEADOR | 4 | CP01, P014 | P030 | CP01 | A refinar após CP01 |
-| P021 | Criar esqueleto FastAPI e health check | TODO | 3 | P0 | M | SEQUENCIAL | 4 | P014 | P030 | Não | A refinar |
-| P022 | Criar models/schemas de atividade | BLOCKED | 3 | P0 | M | SEQUENCIAL | 5 | P020, P021 | — | CP01 | A refinar |
-| P023 | Configurar migration inicial PostgreSQL | BLOCKED | 4 | P0 | M | SEQUENCIAL | 6 | P022 | — | Revisar migration | A refinar |
-| P024 | Criar repository read-only e filtros SQL | TODO | 4 | P0 | M | SEQUENCIAL | 7 | P023 | — | Não | A refinar |
-| P025 | Criar seed público representativo | TODO | 4 | P0 | M | PARALELIZÁVEL | 7 | P023 | P024 | Revisão pedagógica | A refinar |
-| P026 | Expor API pública read-only | TODO | 4 | P0 | M | SEQUENCIAL | 8 | P024, P025 | — | Não | A refinar |
-| P030 | Definir casos de teste das Skills aprovadas | BLOCKED | 5 | P0 | S | PARALELIZÁVEL | 4 | CP02, P014 | P020, P021 | CP02 | A refinar após CP02 |
-| P031 | Implementar Skill central | BLOCKED | 5 | P0 | M | SEQUENCIAL | 5 | P030 | — | CP02 | A refinar |
-| P032 | Implementar Skills especializadas aprovadas | BLOCKED | 5 | P0 | M | PARALELIZÁVEL | 6 | P031 | P023 | CP02 | A refinar |
-| P033 | Executar suíte reprodutível de Skills | TODO | 5 | P0 | S | SEQUENCIAL | 7 | P032 | P024, P025 | Revisão pedagógica | A refinar |
-| P040 | Especificar schemas MCP aprovados | BLOCKED | 6 | P0 | S | BLOQUEADOR | 5 | CP03, P020 | P022, P031 | CP03 | A refinar após CP03 |
-| P041 | Implementar `search_activities` read-only | TODO | 6 | P0 | M | SEQUENCIAL | 8 | P024, P040 | — | Não | A refinar |
-| P042 | Implementar `get_activity` read-only | TODO | 6 | P0 | S | PARALELIZÁVEL | 8 | P024, P040 | P041 (com arquivos separados) | Não | A refinar |
-| P043 | Testar schemas, erros, limites e garantia read-only | TODO | 6 | P0 | M | SEQUENCIAL | 9 | P041, P042 | — | Não | A refinar |
-| P050 | Documentar instalação ChatGPT/MCP | TODO | 7 | P0 | S | PARALELIZÁVEL | 10 | P043 | P051 | Não | A refinar |
-| P051 | Smoke test ChatGPT → MCP | TODO | 7 | P0 | M | PARALELIZÁVEL | 10 | P043 | P050 | Pode exigir ambiente ChatGPT | A refinar |
-| P060 | Redesenhar rotas/conteúdo do site vitrine | TODO | 8 | P0 | M | BLOQUEADOR | 4 | P014 | P020, P021, P030 | Revisão de conteúdo | A refinar |
-| P061 | Implementar landing e proposta | TODO | 8 | P0 | M | PARALELIZÁVEL | 5 | P060 | P022, P031, P040 | Não | A refinar |
-| P062 | Implementar tutorial, instalação, exemplos e FAQ | TODO | 8 | P0 | M | SEQUENCIAL | 6 | P061 | P023, P032 | Não | A refinar |
-| P063 | Testes Angular, acessibilidade e responsividade | TODO | 8 | P0 | M | SEQUENCIAL | 7 | P062 | P024, P025, P033 | Não | A refinar |
-| P070 | Configurar deploy FastAPI + Neon | TODO | 9 | P0 | L | SEQUENCIAL | 10 | P026, P043 | P050 | Mudança de infraestrutura | A refinar |
-| P071 | Configurar deploy Angular e SPA fallback | TODO | 9 | P0 | S | PARALELIZÁVEL | 10 | P063 | P050, P070 | Não | A refinar |
-| P072 | Hardening de CORS, logs, erros, secrets e privacidade | TODO | 9 | P0 | M | SEQUENCIAL | 11 | P070, P071 | — | Não | A refinar |
-| P073 | Testes E2E/smoke e documentação operacional | TODO | 9 | P0 | M | SEQUENCIAL | 12 | P051, P072 | — | Não | A refinar |
+| CP03 | Aprovar contrato/transporte MCP | BLOCKED | 1 | P0 | XS | CHECKPOINT | C1 | P001, P002 | CP01, CP02 | **Sim** | [CP03](prompts/CP03-aprovar-mcp.md) |
+| P010 | Caracterizar build e testes Angular | TODO | 2 | P0 | S | PARALELIZÁVEL | 1 | P001, P002 | P015 | Não | [P010](prompts/P010-testes-regressao-angular.md) |
+| P011 | Auditar backend incorporado e inventário OpenAI | REVIEW | 2 | P0 | M | BLOQUEADOR | R | — | — | Revisar reconciliação | [P011](prompts/P011-inventario-backend-externo.md) |
+| P011A | Definir estratégia de consolidação dos repositórios | CANCELLED | 2 | P0 | S | CHECKPOINT | — | P011 | — | Não | Consolidação já realizada; sem objeto |
+| P012 | Remover rota/UI Angular de geração e feedback | TODO | 2 | P0 | M | PARALELIZÁVEL | 2 | P010, P015 | P016 | Não | [P012](prompts/P012-remover-gerador-frontend.md) |
+| P013 | Remover autenticação e Supabase do Angular | TODO | 2 | P0 | M | PARALELIZÁVEL | 3 | P012 | P017 | Não | [P013](prompts/P013-remover-auth-frontend.md) |
+| P014 | Auditar resíduos OpenAI/auth no monorepo | TODO | 2 | P0 | S | BLOQUEADOR | 4 | P012, P013, P016, P017 | P018 | Não | A refinar após Wave 3 |
+| P015 | Criar baseline/testes de caracterização FastAPI | TODO | 2 | P0 | M | PARALELIZÁVEL | 1 | P001, P002 | P010 | Não | [P015](prompts/P015-testes-regressao-fastapi.md) |
+| P016 | Remover geração, feedback e controle de IP do backend | TODO | 2 | P0 | M | PARALELIZÁVEL | 2 | P015 | P012 | Não | [P016](prompts/P016-remover-geracao-backend.md) |
+| P017 | Remover auth, perfis e CRUD privado do backend | TODO | 2 | P0 | M | PARALELIZÁVEL | 3 | P016 | P013 | CP05 se houver dados | [P017](prompts/P017-remover-auth-backend.md) |
+| P018 | Validar CI e contratos de deploy do monorepo | TODO | 2 | P0 | M | PARALELIZÁVEL | 4 | P010, P015 | P014 | Acesso ao Vercel para etapa remota | Detalhamento intermediário |
+| P019 | Planejar transição dos dados/schema Supabase legado | BLOCKED | 3 | P0 | M | BLOQUEADOR | C1.5 | P011, CP01, CP05 | — | CP01 e CP05 | A refinar após checkpoints |
+| CP05 | Decidir retenção/exportação/descarte de dados legados | BLOCKED | 3 | P0 | XS | CHECKPOINT | C1.5 | P011 | — | **Sim; confirmar produção/dados** | [CP05](prompts/CP05-dados-legados.md) |
+| P020 | Definir contrato de domínio aprovado | BLOCKED | 3 | P0 | S | BLOQUEADOR | 5 | CP01, P014, P019 | P030, P060 | CP01 | A refinar após CP01 |
+| P021 | Modularizar FastAPI existente e adicionar health | TODO | 3 | P0 | M | PARALELIZÁVEL | 5 | P014 | P020, P030, P060 | Não | A refinar após Wave 4 |
+| P022 | Criar models/schemas de atividade | BLOCKED | 3 | P0 | M | SEQUENCIAL | 6 | P020, P021 | P031, P040, P061 | CP01 | A refinar |
+| P023 | Criar migration inicial PostgreSQL | BLOCKED | 4 | P0 | M | SEQUENCIAL | 7 | P019, P022 | P032, P062 | Revisar migration | A refinar |
+| P024 | Criar repository read-only e filtros SQL | TODO | 4 | P0 | M | SEQUENCIAL | 8 | P023 | P025, P033, P063 | Não | A refinar |
+| P025 | Criar seed público representativo | TODO | 4 | P0 | M | PARALELIZÁVEL | 8 | P023 | P024 | Revisão pedagógica | A refinar |
+| P026 | Expor API pública read-only | TODO | 4 | P0 | M | SEQUENCIAL | 9 | P024, P025 | — | Não | A refinar |
+| P030 | Definir casos de teste das Skills | BLOCKED | 5 | P0 | S | PARALELIZÁVEL | 5 | CP02, P014 | P020, P021, P060 | CP02 | A refinar após CP02 |
+| P031 | Implementar Skill central | BLOCKED | 5 | P0 | M | PARALELIZÁVEL | 6 | P030 | P022, P040, P061 | CP02 | A refinar |
+| P032 | Implementar Skills especializadas | BLOCKED | 5 | P0 | M | PARALELIZÁVEL | 7 | P031 | P023, P062 | CP02 | A refinar |
+| P033 | Executar suíte reprodutível de Skills | TODO | 5 | P0 | S | PARALELIZÁVEL | 8 | P032 | P024, P025, P063 | Revisão pedagógica | A refinar |
+| P040 | Especificar schemas MCP aprovados | BLOCKED | 6 | P0 | S | PARALELIZÁVEL | 6 | CP03, P020 | P022, P031, P061 | CP03 | A refinar após CP03 |
+| P041 | Implementar `search_activities` read-only | TODO | 6 | P0 | M | SEQUENCIAL | 9 | P024, P040 | — | Não | A refinar |
+| P042 | Implementar `get_activity` read-only | TODO | 6 | P0 | S | PARALELIZÁVEL | 9 | P024, P040 | P041 só com arquivos separados | Não | A refinar |
+| P043 | Testar MCP e garantia read-only | TODO | 6 | P0 | M | SEQUENCIAL | 10 | P041, P042 | — | Não | A refinar |
+| P050 | Documentar instalação ChatGPT/MCP | TODO | 7 | P0 | S | PARALELIZÁVEL | 11 | P043 | P051, P070, P071 | Não | A refinar |
+| P051 | Smoke test ChatGPT → MCP | TODO | 7 | P0 | M | PARALELIZÁVEL | 11 | P043 | P050 | Pode exigir ChatGPT | A refinar |
+| P060 | Redesenhar rotas/conteúdo do site vitrine | TODO | 8 | P0 | M | PARALELIZÁVEL | 5 | P014 | P020, P021, P030 | Revisão de conteúdo | A refinar |
+| P061 | Implementar landing e proposta | TODO | 8 | P0 | M | PARALELIZÁVEL | 6 | P060 | P022, P031, P040 | Não | A refinar |
+| P062 | Implementar tutorial/instalação/exemplos/FAQ | TODO | 8 | P0 | M | PARALELIZÁVEL | 7 | P061 | P023, P032 | Não | A refinar |
+| P063 | Testes Angular, acessibilidade e responsividade | TODO | 8 | P0 | M | PARALELIZÁVEL | 8 | P062 | P024, P025, P033 | Não | A refinar |
+| P070 | Configurar deploy FastAPI + Neon | TODO | 9 | P0 | L | PARALELIZÁVEL | 11 | P026, P043, P018 | P050, P071 | Mudança de infraestrutura | A refinar |
+| P071 | Configurar deploy Angular e SPA fallback | TODO | 9 | P0 | S | PARALELIZÁVEL | 11 | P063, P018 | P050, P070 | Não | A refinar |
+| P072 | Hardening CORS/logs/erros/secrets/privacidade | TODO | 9 | P0 | M | SEQUENCIAL | 12 | P070, P071 | — | Não | A refinar |
+| P073 | E2E/smoke e documentação operacional | TODO | 9 | P0 | M | SEQUENCIAL | 13 | P051, P072 | — | Não | A refinar |
 | CP04 | Revisão humana e validação do MVP | BLOCKED | 9 | P0 | M | CHECKPOINT | C2 | P073 | — | **Sim** | A refinar |
 | F100 | Autenticação, OAuth, contas e perfil | TODO | 10 | P1 | L | CHECKPOINT | Futuro | CP04 | — | **Sim** | Macro |
 | F101 | Turmas e escolas | TODO | 10 | P2 | L | CHECKPOINT | Futuro | F100 | — | **Sim** | Macro |
@@ -51,42 +57,47 @@ Status: `TODO`, `BLOCKED`, `READY`, `IN_PROGRESS`, `REVIEW`, `DONE`, `CANCELLED`
 | F105 | MCP de escrita | TODO | 11 | P2 | L | CHECKPOINT | Futuro | F100, F104 | — | **Sim** | Macro |
 | F106 | Comunidade | TODO | 12 | P3 | L | CHECKPOINT | Futuro | F104 | — | **Sim** | Macro |
 | F107 | BNCC estruturada | TODO | 12 | P2 | L | CHECKPOINT | Futuro | CP04 | — | **Sim** | Macro |
-| F108 | Busca semântica/embeddings | TODO | 12 | P3 | L | CHECKPOINT | Futuro | CP04 | — | **Sim; custo variável** | Macro |
+| F108 | Busca semântica/embeddings | TODO | 12 | P3 | L | CHECKPOINT | Futuro | CP04 | — | **Sim; custo** | Macro |
 | F109 | Personalização | TODO | 12 | P3 | L | CHECKPOINT | Futuro | F100 | — | **Sim** | Macro |
 | F110 | Monetização | TODO | 12 | P3 | L | CHECKPOINT | Futuro | F100 | — | **Sim** | Macro |
 
-## Regras de liberação imediata
+## Alterações desta reconciliação
 
-P001 e P002 estão em `REVIEW`, não `DONE`. Após aprovação humana, movê-las para `DONE`; então CP01–CP03 e P010–P011 passam a `READY`. Checkpoints somente passam a `DONE` após uma escolha explícita registrada em ADR. Itens com checkpoint pendente continuam `BLOCKED` mesmo que outras dependências tenham terminado.
+- **Adicionados:** P015–P019 e CP05, cobrindo baseline FastAPI, duas remoções backend, CI/deploy do monorepo e dados legados.
+- **Alterados:** P011 → REVIEW; P012/P013 removem dependência de consolidação; P021 passa de “criar” para adaptar/modularizar FastAPI; P023 depende do plano de transição; DAG/Waves incorporam backend.
+- **Cancelado:** P011A, pois a consolidação já está no Git.
+- **Bloqueados:** CP01–CP03/CP05 e seus dependentes; P019 aguarda decisões de modelo e dados.
+- **Liberados:** nenhum automaticamente. P010/P015 continuam TODO até P001/P002 serem aprovados como DONE.
 
-## DAG
+## DAG atualizado
 
 ```mermaid
 flowchart TD
-  P001 --> CP01
-  P002 --> CP01
-  P001 --> CP02
-  P002 --> CP02
-  P001 --> CP03
-  P002 --> CP03
   P001 --> P010
   P002 --> P010
-  P001 --> P011
-  P002 --> P011
-  P011 --> P011A
+  P001 --> P015
+  P002 --> P015
   P010 --> P012
-  P011 --> P012
-  P011A --> P012
-  P010 --> P013
-  P011 --> P013
-  P011A --> P013
-  P012 --> P014
+  P015 --> P012
+  P015 --> P016
+  P012 --> P013
+  P016 --> P017
   P013 --> P014
-  CP01 --> P020
+  P016 --> P014
+  P017 --> P014
+  P010 --> P018
+  P015 --> P018
+  P011 --> CP05
+  P011 --> P019
+  CP01 --> P019
+  CP05 --> P019
   P014 --> P020
+  P019 --> P020
   P014 --> P021
+  CP01 --> P020
   P020 --> P022
   P021 --> P022
+  P019 --> P023
   P022 --> P023
   P023 --> P024
   P023 --> P025
@@ -113,6 +124,8 @@ flowchart TD
   P043 --> P051
   P026 --> P070
   P043 --> P070
+  P018 --> P070
+  P018 --> P071
   P063 --> P071
   P070 --> P072
   P071 --> P072
@@ -121,40 +134,42 @@ flowchart TD
   P073 --> CP04
 ```
 
-O grafo foi construído sem arestas de itens futuros para o MVP e não contém dependência circular.
+O DAG não possui ciclos. Checkpoints CP01–CP03 também dependem da aprovação de P001/P002 conforme tabela; arestas foram omitidas do desenho para legibilidade.
 
-## Waves e conflitos
+## Waves afetadas e risco de merge
 
-### Wave 0 — entregue para revisão
+### Wave 1 — baseline dos dois apps
 
-`P001 || P002`
+`P010 || P015`
 
-Ambas alteram documentação central; foram integradas na mesma branch para evitar merge concorrente. Risco baixo após revisão cruzada de evidências.
+Código separado (`frontend/` versus `backend/`), risco baixo; ambos podem tocar backlog, portanto manter docs em um integrador ou fazer merge P010 → P015 e reconciliar uma vez. Branches: `codex/P010-angular-baseline`, `codex/P015-fastapi-baseline`.
 
-### Checkpoint C1
+### Wave 2 — retirar geração paga
 
-`CP01 || CP02 || CP03`
+`P012 || P016`
 
-São decisões independentes, mas CP01 influencia o schema de saída detalhada do MCP. Registrar primeiro CP01, depois CP03, se as respostas forem dadas juntas.
+Passaram a ser paralelas depois dos baselines: contrato `/gerar` desaparecerá nos dois lados e não será substituído. Risco de código baixo; alinhar critério de resíduos e merge backend P016 antes do frontend P012 para evitar UI apontando temporariamente a endpoint inexistente apenas em produção (deploys devem continuar coordenados).
 
-### Wave 1 — preparação segura
+### Wave 3 — retirar contas e escrita privada
 
-`P010 || P011` — P011 permanece bloqueada até o checkout de `pedagogia.ia-api` estar acessível.
+`P013 || P017`
 
-- **Compartilhado:** backlog e inventário documental.
-- **Risco:** baixo no código; médio em documentação.
-- **Estratégia:** branches `codex/P010-angular-regression` e `codex/P011-api-audit`; P010 faz testes locais, P011 audita o segundo repositório sem modificá-lo. Após P011, o checkpoint P011A escolhe como preservar histórico e deploy na consolidação. Merge P010 antes das mudanças de monorepo e reconciliar BACKLOG uma vez.
+Passaram a ser paralelas em diretórios diferentes, mas P017 só pode remover/desativar schema após CP05; a remoção de endpoints pode avançar sem DROP. Merge backend e frontend como uma unidade de release. P017 sucede P016 porque ambos alteram `backend/api/main.py`; P013 sucede P012 por rotas/shell comuns.
 
-### Wave 2 — remoção incremental
+### Wave 4 — verificação
 
-`P012 → P013` (sequencial por padrão)
+`P014 || P018`
 
-Ambas alteram rotas, shell e headers; paralelizar causaria conflito alto. Branches opcionais `codex/P012-remove-generator` e `codex/P013-remove-auth`; merge e estabilizar P012 antes de iniciar P013.
+Buscas de resíduos e CI/deploy são separáveis. P018 pode preparar checks locais, mas validação remota requer acesso humano ao Vercel. Alto risco em arquivos futuros de workflow se paralelizado com outra tarefa de CI; proprietário único para `.github/`.
 
-### Waves 4–8 — após contratos
+### Waves 5–9 — domínio e experiência
 
-`P020 || P021 || P030 || P060` pode ocorrer em áreas separadas depois dos checkpoints e P014. Depois: `P022 || P031 || P040 || P061`, observando que P040 depende de P020. Migrations/repository permanecem sequenciais (`P022 → P023 → P024 → P026`). Skills e site podem avançar em paralelo. MCP só começa após repository e contrato.
+`P020 || P021 || P030 || P060` após seus bloqueadores; depois `P022 || P031 || P040 || P061`. Banco continua `P022 → P023 → P024 → P026`; Skills e site avançam em paralelo. MCP aguarda contrato e repository. P019 agora antecede qualquer migration.
 
-## Comando de retomada
+## Estado atual
 
-Leia os seis documentos de `docs/project/`, todos os ADRs e o código atual. Confirme P001/P002 com revisão humana, identifique a primeira Wave cujas dependências estão `DONE`, refine seus prompts, atualize status para `IN_PROGRESS` apenas ao iniciar e nunca marque implementação como `DONE` automaticamente.
+- **READY:** nenhuma (P001/P002 aguardam revisão humana).
+- **BLOCKED:** CP01, CP02, CP03, CP05, P019, P020, P022, P023, P030, P031, P032, P040 e CP04.
+- **REVIEW:** P001, P002 e P011.
+- **Próxima Wave recomendada:** após aprovar P001/P002/P011, Wave 1: `P010 || P015`.
+- **Não executar nesta reconciliação:** mesmo após aprovação, iniciar a Wave exige uma sessão posterior e atualização explícita para IN_PROGRESS.
