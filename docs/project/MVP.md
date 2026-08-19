@@ -18,6 +18,7 @@ O MVP atende docentes das três etapas iniciais que precisam localizar, criar e 
 - Busca SQL por filtros; PostgreSQL Full-Text Search somente se a busca simples se mostrar insuficiente.
 - Deploy funcional, documentação de instalação/uso e testes essenciais.
 - Remoção incremental, testada e rastreável dos fluxos antigos de geração, feedback e autenticação.
+- Caracterização dos dois aplicativos, decisão controlada sobre dados legados e CI/deploy por subdiretório são requisitos técnicos de transição; não adicionam funcionalidade ao produto.
 
 ## Fora do escopo
 
@@ -50,5 +51,6 @@ Autenticação, OAuth, contas, perfis, professores identificados, turmas, escola
 - **CHECKPOINT-01 — Modelo de dados:** pendente.
 - **CHECKPOINT-02 — Skills:** pendente.
 - **CHECKPOINT-03 — MCP tools:** pendente.
+- **CHECKPOINT-05 — destino dos dados legados:** pendente; bloqueia descarte/migração destrutiva, não a remoção de UI.
 
 Nenhuma implementação dependente desses contratos deve começar antes da aprovação humana registrada em ADR.

@@ -13,7 +13,7 @@ Manter todas as partes do produto em um único repositório.
 
 ## Consequências
 
-Facilita mudanças coordenadas e fonte de verdade; requer organização clara e CI por área. O estado atual ainda é de dois repositórios, com o backend em `pedagogia.ia-api`; a decisão não autoriza uma cópia ou reescrita imediata. A consolidação deverá preservar rastreabilidade, considerar o histórico Git e planejar a transição dos deploys depois da auditoria do backend.
+Facilita mudanças coordenadas e fonte de verdade; requer organização clara e CI por área. A consolidação foi realizada com `frontend/` e `backend/`; deploys e referências ao host antigo ainda precisam de validação incremental.
 
 ## Alternativas rejeitadas
 

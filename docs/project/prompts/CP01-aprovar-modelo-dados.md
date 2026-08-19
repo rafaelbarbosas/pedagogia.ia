@@ -12,9 +12,14 @@ P0
 XS
 ## Tipo
 CHECKPOINT
+## Classificação
+PRECISA REFINAMENTO — checkpoint humano; considerar `backend/supabase/schema.sql` e CP05.
+
 ## Objetivo
 Obter e registrar decisão humana explícita antes da implementação.
 ## Contexto
+O backend agora revela uma tabela `activities` legada (`user_id`, `prompt`, `atividade_gerada`, `compartilhar`) que não atende ao acervo público alvo. UUID/timestamps podem inspirar o contrato, mas não equivalem a modelo aprovado. A decisão de destino dos registros pertence ao CP05.
+
 As alternativas, vantagens, desvantagens e recomendação estão em `docs/project/ARCHITECTURE.md`.
 ## Pré-requisitos
 P001 e P002 revisados.

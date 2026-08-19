@@ -13,7 +13,7 @@ Remover incrementalmente SDK, chamadas, endpoints, configurações, testes e doc
 
 ## Consequências
 
-Elimina custo variável de geração; a remoção só será confirmada após localizar e auditar o backend externo.
+Elimina custo variável de geração. A auditoria localizou HTTP direto à OpenAI em `backend/api/main.py`, além do fluxo consumidor Angular; a remoção só será confirmada após P012, P016 e a auditoria de resíduos P014.
 
 ## Alternativas rejeitadas
 

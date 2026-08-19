@@ -23,8 +23,9 @@
 | CHECKPOINT-01 — Modelo de dados | A/B/C; recomenda-se núcleo relacional enxuto (B) | Models, migration, repository, dados |
 | CHECKPOINT-02 — Skills | A/B/C; recomenda-se central + duas especializadas (C) | Estrutura e testes de Skills |
 | CHECKPOINT-03 — MCP tools | Recomenda-se busca parametrizada + recuperação por ID | Contrato/implementação MCP |
+| CHECKPOINT-05 — dados legados | Confirmar produção e escolher retenção/exportação, anonimização limitada ou descarte controlado | Transição de schema e qualquer operação destrutiva |
 
-As propostas completas estão em [ARCHITECTURE.md](ARCHITECTURE.md). Aprovações devem gerar novos ADRs, atualizar este índice e liberar dependentes no backlog. Nenhuma decisão pendente está implicitamente aprovada.
+As propostas completas estão em [ARCHITECTURE.md](ARCHITECTURE.md); o contexto de CP05 está em [seu prompt](prompts/CP05-dados-legados.md). Aprovações devem gerar novos ADRs, atualizar este índice e liberar dependentes no backlog. Nenhuma decisão pendente está implicitamente aprovada.
 
 ## Regra de mudança
 

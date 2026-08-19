@@ -5,15 +5,15 @@
 
 ## Contexto
 
-FastAPI é a tecnologia definida para o backend, embora não exista neste checkout.
+FastAPI é a tecnologia definida e já existe em `backend/api/main.py`, atualmente como aplicação monolítica legada.
 
 ## Decisão
 
-Implementar o backend mínimo em Python + FastAPI no monorepo.
+Manter e adaptar o backend Python + FastAPI no monorepo.
 
 ## Consequências
 
-Um serviço atende API, health e MCP; a criação aguarda o backlog e não justifica microserviços.
+O código existente será modularizado incrementalmente para API, health e domínio compartilhado com MCP; não se justifica reescrita ou microserviço por padrão.
 
 ## Alternativas rejeitadas
 

@@ -1,20 +1,21 @@
 # Pedagogia.IA
 
-Repositório raiz do Pedagogia.IA, preparado para reunir os projetos do produto em um monorepo.
+Monorepo do Pedagogia.IA.
 
-## Estrutura
+## Estrutura atual
 
 ```text
 .
-├── frontend/  # aplicação Angular
-└── docs/      # documentação do projeto e decisões arquiteturais
+├── frontend/  # Angular 19 (site e fluxos legados em transição)
+├── backend/   # FastAPI + schema Supabase legados em transição
+└── docs/      # planejamento, prompts e decisões arquiteturais
 ```
 
-Nesta etapa, somente o frontend foi reorganizado. O backend ainda não foi importado.
+O estado implementado e o alvo são diferentes. Leia primeiro [`docs/project/ARCHITECTURE.md`](docs/project/ARCHITECTURE.md), [`docs/project/BACKLOG.md`](docs/project/BACKLOG.md) e a [auditoria pós-monorepo](docs/project/BACKLOG-FINDINGS.md). Skills e MCP ainda não existem.
 
-## Frontend
+## Desenvolvimento
 
-Os comandos do Angular devem ser executados a partir de `frontend/`:
+Frontend:
 
 ```bash
 cd frontend
@@ -22,4 +23,14 @@ npm ci
 npm start
 ```
 
-Consulte [`frontend/README.md`](frontend/README.md) para os demais comandos de desenvolvimento e testes.
+Backend (local, sem executar integrações externas sem configuração segura):
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+```
+
+As configurações Vercel são específicas de cada subdiretório; os respectivos projetos precisam usar `frontend` e `backend` como Root Directory.

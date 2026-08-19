@@ -12,6 +12,9 @@ P0
 M
 ## Tipo
 PARALELIZÁVEL
+## Classificação
+OBSOLETO COMO EXECUÇÃO — o backend foi incorporado e a auditoria está em REVIEW; preservar para rastreabilidade.
+
 ## Objetivo
 Ler o repositório de backend já identificado e mapear FastAPI, banco, OpenAI, auth, feedback, variáveis, testes, CI e deploy antes da remoção ou consolidação.
 ## Contexto

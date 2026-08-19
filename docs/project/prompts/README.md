@@ -1,7 +1,19 @@
-# Prompts executáveis
+# Prompts executáveis e classificação pós-monorepo
 
-- Prompts completos: Wave 0 (P001/P002), checkpoint C1 (CP01–CP03), Wave 1 (P010/P011) e Wave 2 (P012/P013).
-- Futuro próximo está detalhado no backlog com objetivo, dependências, escopo e critérios gerais, mas deve ser refinado somente após cada Wave.
-- Futuro distante permanece macro (`F100`–`F110`) para evitar planejamento baseado em suposições.
+| Prompt | Classificação | Motivo |
+|---|---|---|
+| P001, P002 | PRONTO PARA REVISÃO | Entregas antigas em REVIEW; não reexecutar. |
+| CP01 | PRECISA REFINAMENTO | Deve considerar o schema Supabase legado; checkpoint continua humano. |
+| CP02 | PRONTO | Backend não alterou as alternativas de Skills. |
+| CP03 | PRECISA REFINAMENTO | Incluir transporte/deploy e compartilhamento com `backend/`. |
+| P010 | PRONTO | Wave 1, caminhos Angular reais. |
+| P011 | OBSOLETO COMO EXECUÇÃO | Auditoria foi reconciliada; entrega está em REVIEW. |
+| P012 | PRONTO | Wave 2, agora paralelo com P016 após baselines. |
+| P013 | FUTURO PRÓXIMO | Wave 3; refinar após remoção do gerador. |
+| P015 | PRONTO | Novo baseline FastAPI da Wave 1. |
+| P016 | PRONTO | Remoção backend da Wave 2. |
+| P017 | FUTURO PRÓXIMO | Refinado em nível intermediário; condicionado a CP05 para dados. |
+| CP05 | BLOQUEADO | Requer confirmação humana de dados/produção. |
+| P018–P073 | FUTURO/MACRO | Refinar progressivamente após cada Wave/checkpoint. |
 
-Antes de executar qualquer prompt: releia o código, documentos centrais e ADRs; confirme dependências `DONE`; refine caminhos/contratos; atualize para `IN_PROGRESS`. Ao terminar, registre resumo, arquivos, testes, resultado, riscos, pendências e status sugerido `REVIEW`.
+Antes de executar: releia código, documentos e ADRs; confirme dependências `DONE`; atualize para `IN_PROGRESS`. Ao terminar, registre evidências e proponha `REVIEW`, nunca `DONE`. Não execute automaticamente uma tarefa READY.

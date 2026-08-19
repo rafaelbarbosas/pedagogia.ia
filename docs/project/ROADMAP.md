@@ -4,7 +4,7 @@ O roadmap é orientado por dependências, não por datas. O detalhamento execut�
 
 ## Fase 0 — Auditoria
 
-Inventário do Angular, integrações externas, infraestrutura, testes e lacunas. **P001 em REVIEW.** O backend foi identificado como o repositório/infraestrutura separado `pedagogia.ia-api`, mas seu checkout ainda precisa ser disponibilizado e auditado.
+Inventário do Angular, integrações externas, infraestrutura, testes e lacunas. **P001 e a auditoria pós-monorepo P011 estão em REVIEW.** O backend incorporado foi auditado; configuração e dados remotos não foram sondados.
 
 ## Fase 1 — Arquitetura e documentação
 
@@ -12,11 +12,11 @@ Documentos-base, ADRs e decisões conjuntas. **P002 em REVIEW; CP01–CP03 pende
 
 ## Fase 2 — Remoção da arquitetura antiga
 
-Caracterizar testes e dependências nos dois repositórios; auditar `pedagogia.ia-api`; definir a consolidação incremental no monorepo; remover, em incrementos, geração/feedback e autenticação; auditar resíduos. Não afirmar remoção completa enquanto o código e o deploy do backend não forem verificados.
+Caracterizar testes e dependências nos dois aplicativos do monorepo (P010/P015); remover em paralelo controlado geração/feedback no Angular e FastAPI (P012/P016), depois auth/contas/CRUD privado (P013/P017); auditar resíduos e validar CI/deploy (P014/P018). A consolidação já ocorreu; P011A foi cancelada.
 
 ## Fase 3 — Modelo de domínio
 
-Após CP01: contrato enxuto de atividade, esqueleto FastAPI e schemas. Sem migration antes de aprovação humana do modelo.
+Após CP01 e decisão sobre dados legados CP05: plano de transição, contrato enxuto, modularização do FastAPI existente, health e schemas. Sem migration antes das aprovações humanas.
 
 ## Fase 4 — Banco e dados
 
@@ -56,7 +56,7 @@ Avaliações, comentários, publicação, moderação, comunidade, BNCC, busca s
 
 ## Marcos
 
-1. **M0 — Fonte de verdade revisada:** P001/P002 aprovados.
+1. **M0 — Fonte de verdade pós-monorepo revisada:** P001/P002/P011 aprovados.
 2. **M1 — Contratos humanos aprovados:** CP01–CP03.
 3. **M2 — Legado removido:** P014.
 4. **M3 — Dados públicos consultáveis:** P026.
